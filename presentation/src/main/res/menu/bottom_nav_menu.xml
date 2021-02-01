@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/search_item"
+        android:title="Search"
+        android:icon="@drawable/ic_loupe"
+        />
+
+    <item
+        android:id="@+id/fridge_item"
+        android:title="Fridge"
+        android:icon="@drawable/ic_fridge"
+        />
+
+    <item
+        android:id="@+id/favourite_item"
+        android:title="Saved"
+        android:icon="@drawable/ic_saved"
+        />
+
+</menu>

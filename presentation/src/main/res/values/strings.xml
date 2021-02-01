@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Chef Assistant</string>
+    <string name="oop_something_went_wrong">Oop.. something went wrong</string>
+</resources>
