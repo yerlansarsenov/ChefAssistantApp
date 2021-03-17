@@ -2,6 +2,8 @@ package kz.spoonacular.data.di
 
 import com.google.gson.Gson
 import kz.spoonacular.data.BASE_URL
+import kz.spoonacular.data.api.ApiKeyInterceptor
+import kz.spoonacular.data.api.IngredientsApi
 import kz.spoonacular.data.api.RecipeApi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -19,6 +21,7 @@ val retrofitModule = module {
         val interceptor = HttpLoggingInterceptor()
         interceptor.level = HttpLoggingInterceptor.Level.BODY
         builder.addInterceptor(interceptor)
+        builder.addInterceptor(ApiKeyInterceptor())
         return builder.build()
     }
 
@@ -33,8 +36,13 @@ val retrofitModule = module {
 
     single { retrofit(get()) }
 
-    fun api(retrofit: Retrofit) : RecipeApi =
+    fun recipeApi(retrofit: Retrofit) : RecipeApi =
         retrofit.create(RecipeApi::class.java)
 
-    single { api(get()) }
+    fun ingredientsApi(retrofit: Retrofit) : IngredientsApi =
+        retrofit.create(IngredientsApi::class.java)
+
+    single { recipeApi(get()) }
+
+    single { ingredientsApi(get()) }
 }

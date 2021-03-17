@@ -1,7 +1,16 @@
-package kz.spoonacular.data.model.DB_models
+package kz.spoonacular.data.model.db_models
+
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 /**
  * Created by Sarsenov Yerlan on 17.02.2021.
  */
-class RecipesEntity {
-}
+
+@Entity(tableName = "recipes_saved")
+data class RecipesEntity(
+    @PrimaryKey
+    val id: Int,
+    val image: String?,
+    val title: String?
+    )

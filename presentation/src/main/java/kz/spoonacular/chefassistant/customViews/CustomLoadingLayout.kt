@@ -37,10 +37,11 @@ class CustomLoadingLayout: LinearLayout {
         this.layoutParams = llParam
 
         val progressBar : ProgressBar = ProgressBar(context)
-        progressBar.isIndeterminate = true
-        progressBar.setPadding(0, 0, padding, 0)
-        progressBar.layoutParams = llParam
-
+        progressBar.apply {
+            isIndeterminate = true
+            setPadding(0, 0, padding, 0)
+            layoutParams = llParam
+        }
         llParam = LayoutParams(
             ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.WRAP_CONTENT)

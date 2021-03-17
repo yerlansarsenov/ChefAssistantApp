@@ -1,5 +1,6 @@
 package kz.spoonacular.data.repository
 
+import android.util.Log
 import kz.spoonacular.data.api.RecipeApi
 import kz.spoonacular.data.mapper.RecipeByIngrMapper
 import kz.spoonacular.data.mapper.RecipeDetailedMapper
@@ -8,25 +9,29 @@ import kz.spoonacular.domain.model.Either
 import kz.spoonacular.domain.model.reciepeDetails.RecipeDetailed
 import kz.spoonacular.domain.model.recipeByIngredients.RecipeByIngredients
 import kz.spoonacular.domain.model.recipes.Recipe
-import kz.spoonacular.domain.model.recipes.RecipesResponse
 import kz.spoonacular.domain.repository.RecipeRepository
 
 /**
  * Created by Sarsenov Yerlan on 30.01.2021.
  */
+
+private const val TAG = "RecipeRepositoryImpl"
+
 class RecipeRepositoryImpl(
     private val api: RecipeApi,
     private val recipeMapper: RecipeMapper,
     private val recipeDetailedMapper: RecipeDetailedMapper,
     private val recipeByIngrMapper: RecipeByIngrMapper
 ): RecipeRepository {
-    override suspend fun getRecipesFromServer(
+
+
+    override suspend fun getRecipes(
         query: String,
-        cuisine: String,
-        type: String
+        cuisine: List<String>,
+        type: List<String>
     ): Either<List<Recipe>> {
         try {
-            val response = api.getRecipesBySearch(query, cuisine, type)
+            val response = api.getRecipesBySearch(query, cuisine.toStringArgs(), type.toStringArgs())
             if (response.isSuccessful) {
                 if (response.body() == null || response.body()!!.number == null)
                     return Either.Error(response.message())
@@ -41,7 +46,7 @@ class RecipeRepositoryImpl(
         }
     }
 
-    override suspend fun getRecipeByIdFromServer(id: Int): Either<RecipeDetailed> {
+    override suspend fun getRecipeById(id: Int): Either<RecipeDetailed> {
         try {
             val response = api.getInfoRecipeById(id)
             if (response.isSuccessful) {
@@ -55,9 +60,9 @@ class RecipeRepositoryImpl(
         }
     }
 
-    override suspend fun getRecipesByIngredientsFromServer(vararg ingredients: String): Either<List<RecipeByIngredients>> {
+    override suspend fun getRecipesByIngredients(vararg ingredients: String): Either<List<RecipeByIngredients>> {
         try {
-            val response = api.getRecipesByIngredients(getIngredientsSequence(args = ingredients))
+            val response = api.getRecipesByIngredients(getArgsSequence(args = ingredients))
             if (response.isSuccessful) {
                 if (response.body()!!.isNullOrEmpty())
                     return Either.Error(response.message())
@@ -65,11 +70,20 @@ class RecipeRepositoryImpl(
             }
             return Either.Error(response.message())
         } catch (e: Exception) {
+            Log.e(TAG, "getRecipesByIngredients: ${e.message.toString()}")
             return Either.Error(e.message.toString())
         }
     }
 
-    private fun getIngredientsSequence(vararg args: String) : String{
+    private fun List<String>.toStringArgs(): String {
+        var answer = ""
+        for (s in this) {
+            answer = "$answer,$s"
+        }
+        return answer
+    }
+
+    private fun getArgsSequence(vararg args: String) : String{
         var answer = ""
         for (s in args) {
             answer = "$answer,$s"

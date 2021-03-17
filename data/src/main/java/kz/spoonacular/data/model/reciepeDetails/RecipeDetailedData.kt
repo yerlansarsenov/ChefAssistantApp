@@ -12,79 +12,79 @@ import kz.spoonacular.data.model.reciepeDetails.winePairing.WinePairingData
 
 data class RecipeDetailedData(
     @SerializedName("aggregateLikes")
-    val aggregateLikes: Int,
+    val aggregateLikes: Int?,
     @SerializedName("analyzedInstructions")
-    val analyzedInstructions: List<AnalyzedInstructionData>,
+    val analyzedInstructions: List<AnalyzedInstructionData>?,
     @SerializedName("cheap")
-    val cheap: Boolean,
+    val cheap: Boolean?,
     @SerializedName("cookingMinutes")
-    val cookingMinutes: Int,
+    val cookingMinutes: Int?,
     @SerializedName("creditsText")
-    val creditsText: String,
+    val creditsText: String?,
     @SerializedName("cuisines")
-    val cuisines: List<Any>,
+    val cuisines: List<Any>?,
     @SerializedName("dairyFree")
-    val dairyFree: Boolean,
+    val dairyFree: Boolean?,
     @SerializedName("diets")
-    val diets: List<String>,
+    val diets: List<String>?,
     @SerializedName("dishTypes")
-    val dishTypes: List<String>,
+    val dishTypes: List<String>?,
     @SerializedName("extendedIngredients")
-    val extendedIngredients: List<ExtendedIngredientData>,
+    val extendedIngredients: List<ExtendedIngredientData>?,
     @SerializedName("gaps")
-    val gaps: String,
+    val gaps: String?,
     @SerializedName("glutenFree")
-    val glutenFree: Boolean,
+    val glutenFree: Boolean?,
     @SerializedName("healthScore")
-    val healthScore: Int,
+    val healthScore: Int?,
     @SerializedName("id")
-    val id: Int?,
+    val id: Int,
     @SerializedName("image")
-    val image: String,
+    val image: String?,
     @SerializedName("imageType")
-    val imageType: String,
+    val imageType: String?,
     @SerializedName("instructions")
-    val instructions: String,                      // todo: text is in html format with tag <ol>list</ol> and <li>list item</li>
+    val instructions: String?,                      // todo: text is in html format with tag <ol>list</ol> and <li>list item</li>
     @SerializedName("license")
-    val license: String,
+    val license: String?,
     @SerializedName("lowFodmap")
-    val lowFodmap: Boolean,
+    val lowFodmap: Boolean?,
     @SerializedName("occasions")
-    val occasions: List<Any>,
+    val occasions: List<Any>?,
     @SerializedName("originalId")
-    val originalId: Any,
+    val originalId: Any?,
     @SerializedName("preparationMinutes")
-    val preparationMinutes: Int,
+    val preparationMinutes: Int?,
     @SerializedName("pricePerServing")
-    val pricePerServing: Double,
+    val pricePerServing: Double?,
     @SerializedName("readyInMinutes")
-    val readyInMinutes: Int,
+    val readyInMinutes: Int?,
     @SerializedName("servings")
-    val servings: Int,
+    val servings: Int?,
     @SerializedName("sourceName")
-    val sourceName: String,
+    val sourceName: String?,
     @SerializedName("sourceUrl")
-    val sourceUrl: String,
+    val sourceUrl: String?,
     @SerializedName("spoonacularScore")
-    val spoonacularScore: Int,
+    val spoonacularScore: Int?,
     @SerializedName("spoonacularSourceUrl")
-    val spoonacularSourceUrl: String,
+    val spoonacularSourceUrl: String?,
     @SerializedName("summary")
-    val summary: String,                     // todo: text is in html format
+    val summary: String?,                     // todo: text is in html format
     @SerializedName("sustainable")
-    val sustainable: Boolean,
+    val sustainable: Boolean?,
     @SerializedName("title")
-    val title: String,
+    val title: String?,
     @SerializedName("vegan")
-    val vegan: Boolean,
+    val vegan: Boolean?,
     @SerializedName("vegetarian")
-    val vegetarian: Boolean,
+    val vegetarian: Boolean?,
     @SerializedName("veryHealthy")
-    val veryHealthy: Boolean,
+    val veryHealthy: Boolean?,
     @SerializedName("veryPopular")
-    val veryPopular: Boolean,
+    val veryPopular: Boolean?,
     @SerializedName("weightWatcherSmartPoints")
-    val weightWatcherSmartPoints: Int,
+    val weightWatcherSmartPoints: Int?,
     @SerializedName("winePairing")
-    val winePairing: WinePairingData
+    val winePairing: WinePairingData?
 )

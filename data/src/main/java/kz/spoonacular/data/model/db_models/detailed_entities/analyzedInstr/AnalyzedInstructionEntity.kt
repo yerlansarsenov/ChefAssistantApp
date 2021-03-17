@@ -4,9 +4,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "recipe_details_analinstr")
-data class AnalyzedInstruction(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int,
-    val name: String,
-    val stepsIds: List<Int>
+data class AnalyzedInstructionEntity(
+    @PrimaryKey
+    val name: String?,
+    val stepsIds: List<Int>?
 )

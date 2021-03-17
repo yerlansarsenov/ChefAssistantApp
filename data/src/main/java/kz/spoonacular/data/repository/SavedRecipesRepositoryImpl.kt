@@ -13,71 +13,88 @@ import kz.spoonacular.data.model.db_models.detailed_entities.extendedIngr.UsEnti
 import kz.spoonacular.data.model.db_models.detailed_entities.winePairing.ProductMatcheEntity
 import kz.spoonacular.data.model.db_models.detailed_entities.winePairing.WinePairingEntity
 import kz.spoonacular.domain.model.reciepeDetails.RecipeDetailed
-import kz.spoonacular.domain.model.reciepeDetails.analyzedInstr.AnalyzedInstruction
 import kz.spoonacular.domain.model.reciepeDetails.analyzedInstr.Equipment
 import kz.spoonacular.domain.model.reciepeDetails.analyzedInstr.Ingredient
 import kz.spoonacular.domain.model.reciepeDetails.analyzedInstr.Step
-import kz.spoonacular.domain.model.reciepeDetails.extendedIngr.ExtendedIngredient
+import kz.spoonacular.domain.model.reciepeDetails.extendedIngr.Measures
 import kz.spoonacular.domain.model.reciepeDetails.extendedIngr.Metric
 import kz.spoonacular.domain.model.reciepeDetails.extendedIngr.Us
-import kz.spoonacular.domain.model.reciepeDetails.winePairing.ProductMatche
-import kz.spoonacular.domain.model.reciepeDetails.winePairing.WinePairing
 import kz.spoonacular.domain.model.recipes.Recipe
 import kz.spoonacular.domain.repository.SavedRecipesRepository
 
 /**
  * Created by Sarsenov Yerlan on 17.02.2021.
  */
-class RecipeRepositoryImplDB(
+class SavedRecipesRepositoryImpl(
     private val dao: RecipesDao
 ): SavedRecipesRepository {
 
-    private val recipeMapperDB = object: RecipeMapperDB() {
+    /**
+     * implementing mappers using DAO
+     */
 
+    private val recipeMapperDB = RecipeMapperDB()
+
+    /**
+     * implementing SavedRecipesRepository
+     */
+
+    override suspend fun getRecipes(): List<Recipe> {
+        return dao.getAllRecipes().map { recipe ->
+            recipeMapperDB.mapTo(recipe)
+        }
     }
 
+    /**
+     * implementing mappers using DAO
+     */
+
     private val wineMapperDB = object : WineMapperDB() {
-        override fun getProductMatcheById(id: Int): ProductMatcheEntity {
-            TODO("Not yet implemented")
-        }
+        override fun getProductMatcheById(id: Int): ProductMatcheEntity = dao.getProductMatcheById(id)
     }
 
     private val stepsMapperDB = object : AnalyzedInstrMapperDB.StepsMapperDB() {
-        override fun getIngredientsById(id: Int): IngredientEntity {
-            TODO("Not yet implemented")
+        override fun getIngredientsById(id: Int): IngredientEntity = dao.getIngredientById(id)
+        override fun getEquipmentsById(id: Int): EquipmentEntity = dao.getEquipmentById(id)
+        override fun insertEquipment(equipment: Equipment) {
+            dao.insertEquipment(equipmentsMapper.mapFrom(equipment))
         }
 
-        override fun getEquipmentsById(id: Int): EquipmentEntity {
-            TODO("Not yet implemented")
+        override fun insertIngredient(ingredient: Ingredient) {
+            dao.insertIngredientIngr(ingredientsMapper.mapFrom(ingredient))
         }
     }
 
     private val analyzedInstrMapperDB = object : AnalyzedInstrMapperDB(
         stepsMapper = stepsMapperDB
     ) {
-        override fun getStepById(id: Int): StepEntity {
-            TODO("Not yet implemented")
+        override fun insertSteps(step: Step): Int {
+            return dao.insertStepIngr(stepsMapperDB.mapFrom(step))[0]
         }
+
+        override fun getStepById(id: Int): StepEntity = dao.getStepById(id)
     }
 
     private val measuresMapperDB = object : ExtendedIngrMapperDB.MeasuresMapperDB() {
-        override fun getMetricById(id: Int): MetricEntity {
-            TODO("Not yet implemented")
+        override fun getMetricById(id: Int): MetricEntity = dao.getMetricById(id)
+        override fun getUsBuId(id: Int): UsEntity = dao.getUsById(id)
+        override fun insertMetric(metric: Metric): Int {
+            return dao.insertMetric(metricMapperDB.mapFrom(metric))[0]
         }
 
-        override fun getUsBuId(id: Int): UsEntity {
-            TODO("Not yet implemented")
+        override fun insertUs(us: Us): Int {
+            return dao.insertUs(usMapperDB.mapFrom(us))[0]
         }
-
     }
 
     private val extendedIngrMapperDB = object : ExtendedIngrMapperDB(
         measuresMapper = measuresMapperDB
     ) {
-        override fun getMeasureById(id: Int): MeasuresEntity {
-            TODO("Not yet implemented")
-        }
+        override fun getMeasureById(id: Int): MeasuresEntity = dao.getMeasureById(id)
 
+        override fun insertMeasuredId(measures: Measures): Int {
+            return dao.insertMeasure(measuresMapperDB.mapFrom(measures))[0]
+        }
     }
 
     private val recipeDetailedMapperDB = object : RecipeDetailedMapperDB(
@@ -85,60 +102,71 @@ class RecipeRepositoryImplDB(
         analyzedMapper = analyzedInstrMapperDB,
         extendedIngrMapper = extendedIngrMapperDB
     ) {
-        override fun getWineParingById(id: Int): WinePairingEntity {
-            TODO("Not yet implemented")
-        }
-        override fun getAnalyzedById(id: Int): AnalyzedInstructionEntity {
-            TODO("Not yet implemented")
-        }
-        override fun getExtendedById(id: Int): ExtendedIngredientEntity {
-            TODO("Not yet implemented")
-        }
+        override fun getWineParingById(name: String): WinePairingEntity = dao.getWinePairingById(name)
+
+        override fun getAnalyzedById(id: String): AnalyzedInstructionEntity = dao.getAnalyzedById(id)
+
+        override fun getExtendedById(id: Int): ExtendedIngredientEntity = dao.getExtendedIngrById(id)
     }
 
-    override suspend fun getRecipes(): List<Recipe> {
-        return dao.getAllRecipes().map { recipe ->
-            recipeMapperDB.map(recipe)
-        }
-    }
+    /**
+     * implementing SavedRecipesRepository
+     */
 
     override suspend fun getRecipeById(id: Int): RecipeDetailed {
-        return recipeDetailedMapperDB.map(dao.getRecipeDetailsById(id))
+        val recipeEntity = dao.getRecipeDetailsById(id)
+
+        return recipeDetailedMapperDB.mapTo(recipeEntity)
     }
 
-    override suspend fun getWinePairingById(id: Int): WinePairing = wineMapperDB.map(dao.getWinePairingById(id))
+    override suspend fun insertRecipe(recipeDetailed: RecipeDetailed) {
+        val recipe = Recipe(
+            id = recipeDetailed.id,
+            image = recipeDetailed.image,
+            title = recipeDetailed.title
+        )
+        dao.insertRecipes(recipeMapperDB.mapFrom(recipe))
 
-    override suspend fun getProductMatcheById(id: Int): ProductMatche {
-        TODO("Not yet implemented")
+        recipeDetailed.apply {
+            analyzedInstructions.forEach { analyzedInstruction ->
+                dao.insertAnalyzed(analyzedInstrMapperDB.mapFrom(analyzedInstruction))
+                analyzedInstruction.apply {
+                    steps.forEach { step ->
+                        analyzedInstrMapperDB.insertSteps(step)
+                        step.apply {
+                            equipments.forEach { equipment ->
+                                stepsMapperDB.insertEquipment(equipment)
+                            }
+                            ingredients.forEach { ingredient ->
+                                stepsMapperDB.insertIngredient(ingredient)
+                            }
+                        }
+                    }
+                }
+            }
+            extendedIngredients.forEach { extended ->
+                dao.insertExtendedIngr(extendedIngrMapperDB.mapFrom(extended))
+                extended.apply {
+                    extendedIngrMapperDB.insertMeasuredId(measures)
+                    measures.apply {
+                        measuresMapperDB.insertMetric(this.metric)
+                        measuresMapperDB.insertUs(this.us)
+                    }
+                }
+            }
+            winePairing.apply {
+                dao.insertWinePairing(wineMapperDB.mapFrom(this))
+            }
+        }
     }
 
-    override suspend fun getUsById(id: Int): Us {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun getMetricById(id: Int): Metric {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun getExtendedIngr(id: Int): ExtendedIngredient {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun getStepById(id: Int): Step {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun getIngredientById(id: Int): Ingredient {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun getEquipmentById(id: Int): Equipment {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun getAnalyzedById(id: Int): AnalyzedInstruction {
-        TODO("Not yet implemented")
-    }
+//    override suspend fun getWinePairingById(id: Int): WinePairing = wineMapperDB.map(dao.getWinePairingById(id))
+//
+//    override suspend fun getExtendedIngr(id: Int): ExtendedIngredient = extendedIngrMapperDB.map(dao.getExtendedIngrById(id))
+//
+//    override suspend fun getStepById(id: Int): Step = stepsMapperDB.map(dao.getStepById(id))
+//
+//    override suspend fun getAnalyzedById(id: Int): AnalyzedInstruction = analyzedInstrMapperDB.map(dao.getAnalyzedById(id))
 
 
 }

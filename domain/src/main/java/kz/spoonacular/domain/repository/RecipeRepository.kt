@@ -10,10 +10,14 @@ import kz.spoonacular.domain.model.recipes.Recipe
  */
 interface RecipeRepository {
 
-    suspend fun getRecipesFromServer(query: String = "", cuisine: String = "", type: String = ""): Either<List<Recipe>>
+    suspend fun getRecipes(
+        query: String = "",
+        cuisine: List<String> = emptyList(),
+        type: List<String> = emptyList()
+    ): Either<List<Recipe>>
 
-    suspend fun getRecipeByIdFromServer(id: Int): Either<RecipeDetailed>
+    suspend fun getRecipeById(id: Int): Either<RecipeDetailed>
 
-    suspend fun getRecipesByIngredientsFromServer(vararg ingredients: String): Either<List<RecipeByIngredients>>
+    suspend fun getRecipesByIngredients(vararg ingredients: String): Either<List<RecipeByIngredients>>
 
 }

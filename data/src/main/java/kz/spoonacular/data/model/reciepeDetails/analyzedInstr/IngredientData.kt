@@ -5,11 +5,11 @@ import com.google.gson.annotations.SerializedName
 
 data class IngredientData(
     @SerializedName("id")
-    val id: Int,
+    val id: Int?,
     @SerializedName("image")
-    val image: String,
+    val image: String?,
     @SerializedName("localizedName")
-    val localizedName: String,
+    val localizedName: String?,
     @SerializedName("name")
-    val name: String
+    val name: String?
 )

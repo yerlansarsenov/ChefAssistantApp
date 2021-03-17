@@ -1,13 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="AppThemeLight.NoActionBar" parent="@style/Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:fontFamily">@font/pt_mono</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorControlHighlight">@color/colorPrimary</item>
+        <item name="autoCompleteTextViewStyle">@style/SearchAutoCompleteTextView</item>
+    </style>
+
+    <style name="SearchAutoCompleteTextView" parent="Widget.AppCompat.Light.AutoCompleteTextView">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textColorHint">@color/white</item>
+    </style>
+
     <style name="ToolbarTitleStyle" parent="@android:style/Widget.TextView">
         <item name="android:textColor">@color/white</item>
         <item name="android:gravity">center</item>
         <item name="android:padding">10dp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">21sp</item>
-        <item name="android:fontFamily">@font/berkshire_swash</item>
+        <item name="android:fontFamily">@font/pt_mono</item>
     </style>
 
     <style name="ErrorTextStyle" parent="@android:style/Widget.TextView">
@@ -16,7 +30,12 @@
         <item name="android:padding">10dp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">21sp</item>
-        <item name="android:fontFamily">@font/berkshire_swash</item>
+        <item name="android:fontFamily">@font/pt_mono</item>
+    </style>
+
+    <style name="CancelButton" parent="android:Widget.Button">
+        <item name="android:background">@color/teal_700</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
 

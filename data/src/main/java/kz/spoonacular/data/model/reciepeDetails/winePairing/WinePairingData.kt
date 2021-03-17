@@ -5,9 +5,9 @@ import com.google.gson.annotations.SerializedName
 
 data class WinePairingData(
     @SerializedName("pairedWines")
-    val pairedWines: List<String>,
+    val pairedWines: List<String>?,
     @SerializedName("pairingText")
-    val pairingText: String,
+    val pairingText: String?,
     @SerializedName("productMatches")
-    val productMatches: List<ProductMatcheData>
+    val productMatches: List<ProductMatcheData>?
 )

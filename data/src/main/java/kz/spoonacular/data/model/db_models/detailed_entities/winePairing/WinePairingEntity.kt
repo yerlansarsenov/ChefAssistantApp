@@ -5,10 +5,9 @@ import androidx.room.PrimaryKey
 
 
 @Entity(tableName = "recipe_details_winepairing")
-data class WinePairing(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int,
-    val pairedWines: List<String>,
-    val pairingText: String,
-    val productMatchesIds: List<Int>
+data class WinePairingEntity(
+    val pairedWines: List<String>?,
+    @PrimaryKey
+    val pairingText: String?,
+    val productMatchesIds: List<Int>?
 )

@@ -7,9 +7,9 @@ data class IngredientDetailedData(
     @SerializedName("aisle")
     val aisle: String,
     @SerializedName("amount")
-    val amount: Int,
+    val amount: Float,
     @SerializedName("extendedName")
-    val extendedName: String,
+    val extendedName: String?,
     @SerializedName("id")
     val id: Int,
     @SerializedName("image")

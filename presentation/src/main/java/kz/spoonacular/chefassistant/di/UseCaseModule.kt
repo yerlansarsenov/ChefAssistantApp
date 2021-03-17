@@ -1,8 +1,6 @@
 package kz.spoonacular.chefassistant.di
 
-import kz.spoonacular.domain.usecase.RecipeDetailedUseCase
-import kz.spoonacular.domain.usecase.RecipeFromIngredientsUseCase
-import kz.spoonacular.domain.usecase.SearchUseCase
+import kz.spoonacular.domain.usecase.*
 import org.koin.dsl.module
 
 /**
@@ -13,4 +11,6 @@ val useCaseModule = module {
     factory { SearchUseCase(get()) }
     factory { RecipeDetailedUseCase(get()) }
     factory { RecipeFromIngredientsUseCase(get()) }
+    factory { SavedRecipesUseCase(get()) }
+    factory { IngredientsSearchUseCase(get()) }
 }

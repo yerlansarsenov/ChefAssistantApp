@@ -4,9 +4,9 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "recipe_details_measures")
-data class Measures(
+data class MeasuresEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
-    val metricId: Int,
-    val usId: Int
+    val metricId: Int?,
+    val usId: Int?
 )

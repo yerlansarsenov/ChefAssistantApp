@@ -4,7 +4,7 @@ import kz.spoonacular.domain.model.reciepeDetails.analyzedInstr.Equipment
 import kz.spoonacular.domain.model.reciepeDetails.analyzedInstr.Ingredient
 
 data class Step(
-    val equipment: List<Equipment>,
+    val equipments: List<Equipment>,
     val ingredients: List<Ingredient>,
     val number: Int,
     val step: String

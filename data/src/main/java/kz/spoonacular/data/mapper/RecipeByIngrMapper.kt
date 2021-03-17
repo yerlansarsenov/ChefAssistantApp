@@ -30,7 +30,7 @@ class RecipeByIngrMapper: Mapper<RecipeByIngredientsData, RecipeByIngredients> {
             return IngredientDetailed(
                 aisle = model.aisle,
                 amount = model.amount,
-                extendedName = model.extendedName,
+                extendedName = model.extendedName ?: model.name,
                 id = model.id,
                 image = model.image,
                 meta = model.meta,

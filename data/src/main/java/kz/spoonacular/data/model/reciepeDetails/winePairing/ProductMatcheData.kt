@@ -5,21 +5,21 @@ import com.google.gson.annotations.SerializedName
 
 data class ProductMatcheData(
     @SerializedName("averageRating")
-    val averageRating: Double,
+    val averageRating: Double?,
     @SerializedName("description")
-    val description: String,
+    val description: String?,
     @SerializedName("id")
-    val id: Int,
+    val id: Int?,
     @SerializedName("imageUrl")
-    val imageUrl: String,
+    val imageUrl: String?,
     @SerializedName("link")
-    val link: String,
+    val link: String?,
     @SerializedName("price")
-    val price: String,
+    val price: String?,
     @SerializedName("ratingCount")
-    val ratingCount: Double,
+    val ratingCount: Double?,
     @SerializedName("score")
-    val score: Double,
+    val score: Double?,
     @SerializedName("title")
-    val title: String
+    val title: String?
 )

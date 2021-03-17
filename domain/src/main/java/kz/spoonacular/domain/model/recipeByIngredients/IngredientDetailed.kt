@@ -3,7 +3,7 @@ package kz.spoonacular.domain.model.recipeByIngredients
 
 data class IngredientDetailed(
     val aisle: String,
-    val amount: Int,
+    val amount: Float,
     val extendedName: String,
     val id: Int,
     val image: String,

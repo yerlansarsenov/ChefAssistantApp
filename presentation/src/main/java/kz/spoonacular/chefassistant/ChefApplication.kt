@@ -2,6 +2,8 @@ package kz.spoonacular.chefassistant
 
 import android.app.Application
 import kz.spoonacular.chefassistant.di.useCaseModule
+import kz.spoonacular.chefassistant.di.viewModelModule
+import kz.spoonacular.data.di.dataBaseModule
 import kz.spoonacular.data.di.mapperModule
 import kz.spoonacular.data.di.repositoryModule
 import kz.spoonacular.data.di.retrofitModule
@@ -23,9 +25,11 @@ class ChefApplication : Application() {
             modules(
                 listOf(
                     mapperModule,
+                    dataBaseModule,
                     retrofitModule,
                     repositoryModule,
-                    useCaseModule
+                    useCaseModule,
+                    viewModelModule
                 )
             )
         }

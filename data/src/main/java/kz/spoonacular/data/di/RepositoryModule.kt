@@ -1,7 +1,11 @@
 package kz.spoonacular.data.di
 
+import kz.spoonacular.data.repository.IngredientsRepositoryImpl
 import kz.spoonacular.data.repository.RecipeRepositoryImpl
+import kz.spoonacular.data.repository.SavedRecipesRepositoryImpl
+import kz.spoonacular.domain.repository.IngredientsRepository
 import kz.spoonacular.domain.repository.RecipeRepository
+import kz.spoonacular.domain.repository.SavedRecipesRepository
 import org.koin.dsl.module
 
 /**
@@ -15,6 +19,19 @@ val repositoryModule = module {
             recipeDetailedMapper = get(),
             recipeMapper = get(),
             recipeByIngrMapper = get()
+        )
+    }
+
+    single<SavedRecipesRepository> {
+        SavedRecipesRepositoryImpl(
+            dao = get()
+        )
+    }
+
+    single<IngredientsRepository> {
+        IngredientsRepositoryImpl(
+            api = get(),
+            mapper = get()
         )
     }
 }

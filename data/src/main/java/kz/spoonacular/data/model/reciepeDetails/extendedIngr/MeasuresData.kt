@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class MeasuresData(
     @SerializedName("metric")
-    val metric: MetricData,
+    val metric: MetricData?,
     @SerializedName("us")
-    val us: UsData
+    val us: UsData?
 )

@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class AnalyzedInstructionData(
     @SerializedName("name")
-    val name: String,
+    val name: String?,
     @SerializedName("steps")
-    val steps: List<StepData>
+    val steps: List<StepData>?
 )

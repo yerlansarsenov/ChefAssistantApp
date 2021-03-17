@@ -5,29 +5,29 @@ import com.google.gson.annotations.SerializedName
 
 data class ExtendedIngredientData(
     @SerializedName("aisle")
-    val aisle: String,
+    val aisle: String?,
     @SerializedName("amount")
-    val amount: Double,
+    val amount: Double?,
     @SerializedName("consistency")
-    val consistency: String,
+    val consistency: String?,
     @SerializedName("id")
-    val id: Int,
+    val id: Int?,
     @SerializedName("image")
-    val image: String,
+    val image: String?,
     @SerializedName("measures")
-    val measures: MeasuresData,
+    val measures: MeasuresData?,
     @SerializedName("meta")
-    val meta: List<String>,
+    val meta: List<String>?,
     @SerializedName("metaInformation")
-    val metaInformation: List<String>,
+    val metaInformation: List<String>?,
     @SerializedName("name")
-    val name: String,
+    val name: String?,
     @SerializedName("original")
-    val original: String,
+    val original: String?,
     @SerializedName("originalName")
-    val originalName: String,
+    val originalName: String?,
     @SerializedName("originalString")
-    val originalString: String,
+    val originalString: String?,
     @SerializedName("unit")
-    val unit: String
+    val unit: String?
 )

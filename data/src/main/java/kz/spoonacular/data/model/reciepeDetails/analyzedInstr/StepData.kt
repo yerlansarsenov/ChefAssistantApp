@@ -5,11 +5,11 @@ import com.google.gson.annotations.SerializedName
 
 data class StepData(
     @SerializedName("equipment")
-    val equipment: List<EquipmentData>,
+    val equipment: List<EquipmentData>?,
     @SerializedName("ingredients")
-    val ingredients: List<IngredientData>,
+    val ingredients: List<IngredientData>?,
     @SerializedName("number")
-    val number: Int,
+    val number: Int?,
     @SerializedName("step")
-    val step: String
+    val step: String?
 )
