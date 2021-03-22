@@ -42,10 +42,4 @@ val viewModelModule = module {
         )
     }
 
-    viewModel {
-        SavedViewModel(
-            savedStateHandle = get(),
-            useCase = get()
-        )
-    }
 }

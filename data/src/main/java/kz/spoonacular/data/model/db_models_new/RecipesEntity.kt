@@ -1,4 +1,4 @@
-package kz.spoonacular.data.model.db_models
+package kz.spoonacular.data.model.db_models_new
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

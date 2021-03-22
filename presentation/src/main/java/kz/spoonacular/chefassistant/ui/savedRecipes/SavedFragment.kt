@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -42,12 +41,12 @@ class SavedFragment: BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         errorLayout = view.findViewById(R.id.error_layout)
-        recyclerView = view.findViewById<RecyclerView>(R.id.recipes_search_recycler_view)
+        recyclerView = view.findViewById(R.id.recipes_saved_recycler_view)
         recyclerView.adapter = recipesAdapter
         recyclerView.layoutManager = GridLayoutManager(activity, 2)
         val swipeRefreshLayout = view.findViewById<SwipeRefreshLayout>(R.id.swipe_refresh_layout)
         swipeRefreshLayout.setOnRefreshListener {
-            viewModel.getAllSaved()
+            viewModel.getSavedRecipes()
         }
         viewModel.liveDataLoadingState.observe(viewLifecycleOwner) { state ->
             when(state) {

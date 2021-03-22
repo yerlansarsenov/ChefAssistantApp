@@ -1,6 +1,6 @@
 package kz.spoonacular.data.mapper.db_mapper
 
-import kz.spoonacular.data.model.db_models.RecipesEntity
+import kz.spoonacular.data.model.db_models_new.RecipesEntity
 import kz.spoonacular.domain.mapper.DoubleMapper
 import kz.spoonacular.domain.mapper.Mapper
 import kz.spoonacular.domain.model.recipes.Recipe

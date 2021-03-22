@@ -23,7 +23,11 @@ class SavedViewModel(
     val liveDataLoadingState: LiveData<LoadingState>
         get() = _liveDataLoadingState
 
-    fun getAllSaved() {
+    init {
+        getSavedRecipes()
+    }
+
+    fun getSavedRecipes() {
         viewModelScope.launch {
             _liveDataLoadingState.value = LoadingState.ShowLoading
             val request = useCase.getSavedRecipes()

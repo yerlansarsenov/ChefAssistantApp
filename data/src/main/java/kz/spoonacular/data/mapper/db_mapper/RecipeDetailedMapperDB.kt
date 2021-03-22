@@ -1,16 +1,16 @@
 package kz.spoonacular.data.mapper.db_mapper
 
-import kz.spoonacular.data.model.db_models.detailed_entities.RecipeDetailsEntity
-import kz.spoonacular.data.model.db_models.detailed_entities.analyzedInstr.AnalyzedInstructionEntity
-import kz.spoonacular.data.model.db_models.detailed_entities.analyzedInstr.EquipmentEntity
-import kz.spoonacular.data.model.db_models.detailed_entities.analyzedInstr.IngredientEntity
-import kz.spoonacular.data.model.db_models.detailed_entities.analyzedInstr.StepEntity
-import kz.spoonacular.data.model.db_models.detailed_entities.extendedIngr.ExtendedIngredientEntity
-import kz.spoonacular.data.model.db_models.detailed_entities.extendedIngr.MeasuresEntity
-import kz.spoonacular.data.model.db_models.detailed_entities.extendedIngr.MetricEntity
-import kz.spoonacular.data.model.db_models.detailed_entities.extendedIngr.UsEntity
-import kz.spoonacular.data.model.db_models.detailed_entities.winePairing.ProductMatcheEntity
-import kz.spoonacular.data.model.db_models.detailed_entities.winePairing.WinePairingEntity
+import kz.spoonacular.data.model.db_models_new.detailed_entities.RecipeDetailsEntity
+import kz.spoonacular.data.model.db_models_new.detailed_entities.analyzedInstr.AnalyzedInstructionEntity
+import kz.spoonacular.data.model.db_models_new.detailed_entities.analyzedInstr.EquipmentEntity
+import kz.spoonacular.data.model.db_models_new.detailed_entities.analyzedInstr.IngredientEntity
+import kz.spoonacular.data.model.db_models_new.detailed_entities.analyzedInstr.StepEntity
+import kz.spoonacular.data.model.db_models_new.detailed_entities.extendedIngr.ExtendedIngredientEntity
+import kz.spoonacular.data.model.db_models_new.detailed_entities.extendedIngr.MeasuresEntity
+import kz.spoonacular.data.model.db_models_new.detailed_entities.extendedIngr.MetricEntity
+import kz.spoonacular.data.model.db_models_new.detailed_entities.extendedIngr.UsEntity
+import kz.spoonacular.data.model.db_models_new.detailed_entities.winePairing.ProductMatcheEntity
+import kz.spoonacular.data.model.db_models_new.detailed_entities.winePairing.WinePairingEntity
 import kz.spoonacular.domain.mapper.DoubleMapper
 import kz.spoonacular.domain.model.reciepeDetails.RecipeDetailed
 import kz.spoonacular.domain.model.reciepeDetails.analyzedInstr.AnalyzedInstruction
@@ -35,8 +35,8 @@ abstract class RecipeDetailedMapperDB(
 ): DoubleMapper<RecipeDetailsEntity, RecipeDetailed> {
     override fun mapTo(model: RecipeDetailsEntity): RecipeDetailed {
         return RecipeDetailed(
-            analyzedInstructions = model.analyzedInstructionsIds?.map { id ->
-                analyzedMapper.mapTo(getAnalyzedById(id))
+            analyzedInstructions = model.analyzedInstructions?.map { item ->
+                analyzedMapper.mapTo(item)
             } ?: emptyList(),
             cheap = model.cheap ?: false,
             cookingMinutes = model.cookingMinutes ?: -1,
@@ -45,9 +45,9 @@ abstract class RecipeDetailedMapperDB(
             dairyFree = model.dairyFree ?: false,
             diets = model.diets ?: emptyList(),
             dishTypes = model.dishTypes ?: emptyList(),
-            extendedIngredients = model.extendedIngredientsIds?.let { list ->
-                list.map { id ->
-                    extendedIngrMapper.mapTo(getExtendedById(id))
+            extendedIngredients = model.extendedIngredients?.let { list ->
+                list.map { item ->
+                    extendedIngrMapper.mapTo(item)
                 }
             } ?: emptyList(),
             glutenFree = model.glutenFree ?: false,
@@ -57,7 +57,7 @@ abstract class RecipeDetailedMapperDB(
             instructions = model.instructions ?: "",
             license = model.license ?: "",
             lowFodmap = model.lowFodmap ?: false,
-            originalId = model.originalId,
+            originalId = model.original,
             preparationMinutes = model.preparationMinutes ?: -1,
             pricePerServing = model.pricePerServing ?: (-1).toDouble(),
             readyInMinutes = model.readyInMinutes ?: -1,
@@ -74,16 +74,17 @@ abstract class RecipeDetailedMapperDB(
             veryHealthy = model.veryHealthy ?: false,
             veryPopular = model.veryPopular ?: false,
             weightWatcherSmartPoints = model.weightWatcherSmartPoints ?: -1,
-            winePairing = model.winePairingId?.let { wineMapper.mapTo(getWineParingById(it)) } ?: WinePairing(
+            winePairing = model.winePairing?.let { wineMapper.mapTo(it) } ?: WinePairing(
                 emptyList(), "", emptyList())
         )
     }
 
     override fun mapFrom(model: RecipeDetailed): RecipeDetailsEntity {
         return RecipeDetailsEntity(
-            analyzedInstructionsIds = model.analyzedInstructions.map {
-                it.name
-            },
+            analyzedInstructions =
+                model.analyzedInstructions.map {
+                    analyzedMapper.mapFrom(it)
+                },
             cheap = model.cheap,
             cookingMinutes = model.cookingMinutes,
             creditsText = model.creditsText,
@@ -91,9 +92,10 @@ abstract class RecipeDetailedMapperDB(
             dairyFree = model.dairyFree,
             diets = model.diets,
             dishTypes = model.dishTypes,
-            extendedIngredientsIds = model.extendedIngredients.map {
-                it.id
-            },
+            extendedIngredients =
+                model.extendedIngredients.map {
+                    extendedIngrMapper.mapFrom(it)
+                },
             glutenFree = model.glutenFree,
             healthScore = model.healthScore,
             id = model.id,
@@ -101,7 +103,7 @@ abstract class RecipeDetailedMapperDB(
             instructions = model.instructions,
             license = model.license,
             lowFodmap = model.lowFodmap ?: false,
-            originalId = model.originalId,
+            original = model.originalId,
             preparationMinutes = model.preparationMinutes ?: -1,
             pricePerServing = model.pricePerServing ?: (-1).toDouble(),
             readyInMinutes = model.readyInMinutes ?: -1,
@@ -118,15 +120,9 @@ abstract class RecipeDetailedMapperDB(
             veryHealthy = model.veryHealthy ?: false,
             veryPopular = model.veryPopular ?: false,
             weightWatcherSmartPoints = model.weightWatcherSmartPoints ?: -1,
-            winePairingId = model.winePairing.pairingText
+            winePairing = wineMapper.mapFrom(model.winePairing)
         )
     }
-
-    abstract fun getWineParingById(name: String) : WinePairingEntity
-
-    abstract fun getAnalyzedById(id: String) : AnalyzedInstructionEntity
-
-    abstract  fun getExtendedById(id: Int) : ExtendedIngredientEntity
 }
 
 abstract class WineMapperDB: DoubleMapper<WinePairingEntity, WinePairing> {
@@ -135,23 +131,25 @@ abstract class WineMapperDB: DoubleMapper<WinePairingEntity, WinePairing> {
         return WinePairing(
             pairedWines = model.pairedWines ?: emptyList(),
             pairingText = model.pairingText ?: "",
-            productMatches = model.productMatchesIds?.map { id ->
-                productMatcheMapper.mapTo(getProductMatcheById(id))
-            } ?: emptyList()
+            productMatches =
+                model.productMatches?.map { id ->
+                    productMatcheMapper.mapTo(id)
+                } ?: emptyList()
         )
     }
 
     override fun mapFrom(model: WinePairing): WinePairingEntity {
+        val productMatcheMapper = ProductMatchesMapperDB()
         return WinePairingEntity(
             pairedWines = model.pairedWines ?: emptyList(),
             pairingText = model.pairingText ?: "",
-            productMatchesIds = model.productMatches.map {
-                it.id
-            }
+            productMatches =
+                model.productMatches.map {
+                    productMatcheMapper.mapFrom(it)
+                },
+            id = 0
         )
     }
-
-    abstract fun getProductMatcheById(id: Int): ProductMatcheEntity
 
     inner class ProductMatchesMapperDB: DoubleMapper<ProductMatcheEntity, ProductMatche> {
         override fun mapTo(model: ProductMatcheEntity): ProductMatche = ProductMatche(
@@ -188,24 +186,23 @@ abstract class AnalyzedInstrMapperDB(
     override fun mapTo(model: AnalyzedInstructionEntity): AnalyzedInstruction {
         return AnalyzedInstruction(
             name = model.name ?: "",
-            steps = model.stepsIds?.map { id ->
-                stepsMapper.mapTo(getStepById(id))
-            } ?: emptyList()
+            steps =
+                model.steps?.map { item ->
+                    stepsMapper.mapTo(item)
+                } ?: emptyList()
         )
     }
 
     override fun mapFrom(model: AnalyzedInstruction): AnalyzedInstructionEntity {
         return AnalyzedInstructionEntity(
             name = model.name,
-            stepsIds = model.steps.map {
-                insertSteps(it)
-            }
+            steps =
+                model.steps.map {
+                    stepsMapper.mapFrom(it)
+                },
+            id = 0
         )
     }
-
-    abstract fun insertSteps(step: Step) : Int
-
-    abstract fun getStepById(id: Int) : StepEntity
 
     abstract class StepsMapperDB: DoubleMapper<StepEntity, Step> {
         val ingredientsMapper = IngredientsMapperDB()
@@ -213,11 +210,11 @@ abstract class AnalyzedInstrMapperDB(
         val equipmentsMapper = EquipmentsMapperDB()
 
         override fun mapTo(model: StepEntity): Step = Step(
-                ingredients = model.ingredientsId?.map { id ->
-                    ingredientsMapper.mapTo(getIngredientsById(id))
+                ingredients = model.ingredients?.map { item ->
+                    ingredientsMapper.mapTo(item)
                 } ?: emptyList(),
-                equipments = model.equipmentId?.map { id ->
-                    equipmentsMapper.mapTo(getEquipmentsById(id))
+                equipments = model.equipments?.map { item ->
+                    equipmentsMapper.mapTo(item)
                 } ?: emptyList(),
                 number = model.number ?: -1,
                 step = model.step ?: ""
@@ -225,25 +222,17 @@ abstract class AnalyzedInstrMapperDB(
 
         override fun mapFrom(model: Step): StepEntity {
             return StepEntity(
-                ingredientsId = model.ingredients.map {
-                    it.id
+                ingredients = model.ingredients.map {
+                    ingredientsMapper.mapFrom(it)
                 },
-                equipmentId = model.equipments.map {
-                    it.id
+                equipments = model.equipments.map {
+                    equipmentsMapper.mapFrom(it)
                 },
                 number = model.number,
                 step = model.step,
                 id = 0
             )
         }
-
-        abstract fun getIngredientsById(id: Int): IngredientEntity
-
-        abstract fun getEquipmentsById(id: Int): EquipmentEntity
-
-        abstract fun insertEquipment(equipment: Equipment)
-
-        abstract fun insertIngredient(ingredient: Ingredient)
 
         inner class IngredientsMapperDB: DoubleMapper<IngredientEntity, Ingredient> {
             override fun mapTo(model: IngredientEntity): Ingredient = Ingredient(
@@ -296,12 +285,13 @@ abstract class ExtendedIngrMapperDB(
             consistency = model.consistency ?: "",
             id = model.id,
             image = model.image ?: "",
-            measures = model.measuresId?.let { id ->
-                measuresMapper.mapTo(getMeasureById(id))
-            } ?: Measures(
-                us = Us((-1).toDouble(), "", ""),
-                metric = Metric((-1).toDouble(), "", "")
-            ),
+            measures =
+                model.measures?.let { item ->
+                    measuresMapper.mapTo(item)
+                } ?: Measures(
+                    us = Us((-1).toDouble(), "", ""),
+                    metric = Metric((-1).toDouble(), "", "")
+                ),
             meta = model.meta ?: emptyList(),
             metaInformation = model.metaInformation ?: emptyList(),
             name = model.name ?: "",
@@ -319,7 +309,10 @@ abstract class ExtendedIngrMapperDB(
             consistency = model.consistency,
             id = model.id,
             image = model.image,
-            measuresId = insertMeasuredId(model.measures),
+            measures =
+                model.measures.let {
+                    measuresMapper.mapFrom(it)
+                },
             meta = model.meta,
             metaInformation = model.metaInformation,
             name = model.name,
@@ -330,10 +323,6 @@ abstract class ExtendedIngrMapperDB(
         )
     }
 
-    abstract fun getMeasureById(id: Int) : MeasuresEntity
-
-    abstract fun insertMeasuredId(measures: Measures): Int
-
     abstract class MeasuresMapperDB: DoubleMapper<MeasuresEntity, Measures> {
 
         val metricMapperDB = MetricMapperDB()
@@ -341,30 +330,30 @@ abstract class ExtendedIngrMapperDB(
 
         override fun mapTo(model: MeasuresEntity): Measures {
             return Measures(
-                metric = model.metricId?.let { id ->
-                    MetricMapperDB().mapTo(getMetricById(id))
-                } ?: Metric((-1).toDouble(), "", ""),
-                us = model.usId?.let { id ->
-                    UsMapperDB().mapTo(getUsBuId(id))
-                } ?: Us((-1).toDouble(), "", "")
+                metric =
+                    model.metric?.let { item ->
+                        MetricMapperDB().mapTo(item)
+                    } ?: Metric((-1).toDouble(), "", ""),
+                us =
+                    model.us?.let { item ->
+                        UsMapperDB().mapTo(item)
+                    } ?: Us((-1).toDouble(), "", "")
             )
         }
 
         override fun mapFrom(model: Measures): MeasuresEntity {
             return MeasuresEntity(
-                metricId = insertMetric(model.metric),
-                usId = insertUs(model.us),
+                metric =
+                    model.metric.let { item ->
+                        MetricMapperDB().mapFrom(item)
+                    },
+                us =
+                    model.us.let { item ->
+                        UsMapperDB().mapFrom(item)
+                    },
                 id = 0
             )
         }
-
-        abstract fun getMetricById(id: Int): MetricEntity
-
-        abstract fun getUsBuId(id: Int): UsEntity
-
-        abstract fun insertMetric(metric: Metric): Int
-
-        abstract fun insertUs(us: Us): Int
 
         inner class MetricMapperDB: DoubleMapper<MetricEntity, Metric> {
             override fun mapTo(model: MetricEntity): Metric = Metric(

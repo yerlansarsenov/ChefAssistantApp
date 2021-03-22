@@ -1,4 +1,4 @@
-package kz.spoonacular.data.model.db_models.detailed_entities.winePairing
+package kz.spoonacular.data.model.db_models_new.detailed_entities.winePairing
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

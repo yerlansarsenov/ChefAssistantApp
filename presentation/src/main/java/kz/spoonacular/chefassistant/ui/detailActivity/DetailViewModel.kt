@@ -30,12 +30,17 @@ class DetailViewModel(
             return
         viewModelScope.launch {
             _liveDataLoadingState.value = LoadingState.ShowLoading
-            when (val request = useCase.getRecipeById(id)) {
-                is Either.Success -> {
-                    _livaDataMovie.value = Either.Success(request.response)
-                }
-                is Either.Error -> {
-                    _livaDataMovie.value = Either.Error(request.error)
+            val dbRequest = saveUseCase.getSavedRecipeById(id)
+            if (dbRequest != null && dbRequest.title.isNotEmpty()) {
+                _livaDataMovie.value = Either.Success(dbRequest)
+            } else {
+                when (val serverRequest = useCase.getRecipeById(id)) {
+                    is Either.Success -> {
+                        _livaDataMovie.value = Either.Success(serverRequest.response)
+                    }
+                    is Either.Error -> {
+                        _livaDataMovie.value = Either.Error(serverRequest.error)
+                    }
                 }
             }
             _liveDataLoadingState.value = LoadingState.HideLoading
