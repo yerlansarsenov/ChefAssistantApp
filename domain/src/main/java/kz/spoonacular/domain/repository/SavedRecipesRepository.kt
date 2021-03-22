@@ -19,7 +19,7 @@ interface SavedRecipesRepository {
 
     suspend fun getRecipes(): List<Recipe>
 
-    suspend fun getRecipeById(id: Int): RecipeDetailed
+    suspend fun getRecipeById(id: Int): RecipeDetailed?
 
 //    suspend fun getWinePairingById(id: Int): WinePairing
 //

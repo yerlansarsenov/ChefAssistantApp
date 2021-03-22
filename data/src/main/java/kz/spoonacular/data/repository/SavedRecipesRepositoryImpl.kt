@@ -69,9 +69,8 @@ class SavedRecipesRepositoryImpl(
      * implementing SavedRecipesRepository
      */
 
-    override suspend fun getRecipeById(id: Int): RecipeDetailed {
-        val recipeEntity = dao.getRecipeDetailsById(id)
-
+    override suspend fun getRecipeById(id: Int): RecipeDetailed? {
+        val recipeEntity = dao.getRecipeDetailsById(id) ?: return null
         return recipeDetailedMapperDB.mapTo(recipeEntity)
     }
 

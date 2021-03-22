@@ -32,7 +32,7 @@ abstract class RecipesDao {
      */
 
     @Query("select * from recipe_details_entity where id = :id")
-    abstract suspend fun getRecipeDetailsById(id: Int) : RecipeDetailsEntity
+    abstract suspend fun getRecipeDetailsById(id: Int) : RecipeDetailsEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun insertRecipeDetails(vararg recipes: RecipeDetailsEntity)
