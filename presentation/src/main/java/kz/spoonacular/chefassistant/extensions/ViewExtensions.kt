@@ -15,7 +15,9 @@ fun View.hideKeyboard() {
 }
 
 fun ImageView.setImageWithUrl(url: String) {
-    Picasso.get().load(url).into(this)
+    Picasso.get()
+        .load(url)
+        .into(this)
 }
 
 fun RatingBar.setImdbRating(rate: String) {
@@ -29,5 +31,14 @@ fun RatingBar.setImdbRating(rate: String) {
 }
 
 fun AppCompatImageView.setImageWithUrl(url: String) {
-    Picasso.get().load(url).into(this)
+    Picasso.get()
+        .load(url)
+        .into(this)
+}
+
+fun AppCompatImageView.setImageWithUrlAndFit(url: String) {
+    Picasso.get()
+        .load(url)
+        .resize(50, 50)
+        .into(this)
 }

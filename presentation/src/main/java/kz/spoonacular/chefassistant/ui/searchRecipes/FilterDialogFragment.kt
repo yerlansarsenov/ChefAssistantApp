@@ -1,10 +1,14 @@
 package kz.spoonacular.chefassistant.ui.searchRecipes
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.core.view.forEach
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.chip.Chip
@@ -21,7 +25,7 @@ private const val CUISINES_KEY = "cuisines"
 /**
  * Created by Sarsenov Yerlan on 05.02.2021.
  */
-class FilterDialogFragment: DialogFragment() {
+class FilterDialogFragment: AppCompatDialogFragment() {
 
     private var listener: (types: List<String>, cuisines: List<String>) -> Unit = { _, _ ->}
 
@@ -53,6 +57,7 @@ class FilterDialogFragment: DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         return inflater.inflate(R.layout.difr_filter, container, false)
     }
 

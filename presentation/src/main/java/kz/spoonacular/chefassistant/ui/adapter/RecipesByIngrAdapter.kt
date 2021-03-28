@@ -17,7 +17,9 @@ import kz.spoonacular.domain.model.recipes.Recipe
 /**
  * Created by Sarsenov Yerlan on 05.02.2021.
  */
-class RecipesByIngrAdapter: ListAdapter<RecipeByIngredients, RecipesByIngrAdapter.RecipesViewHolder>(RecipesByIngrDiffUtil()) {
+class RecipesByIngrAdapter(
+    val listener: (id: Int) -> Unit
+): ListAdapter<RecipeByIngredients, RecipesByIngrAdapter.RecipesViewHolder>(RecipesByIngrDiffUtil()) {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipesViewHolder {
@@ -43,6 +45,9 @@ class RecipesByIngrAdapter: ListAdapter<RecipeByIngredients, RecipesByIngrAdapte
             titleTextView.text = recipe.title
             recipeImageView.setImageWithUrl(recipe.image)
             countIngredients.text = "${countIngredients.text}${recipe.missedIngredientCount + recipe.usedIngredientCount}"
+            itemView.setOnClickListener {
+                listener.invoke(recipe.id)
+            }
         }
     }
 

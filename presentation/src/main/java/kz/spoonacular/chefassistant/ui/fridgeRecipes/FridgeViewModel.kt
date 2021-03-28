@@ -14,8 +14,7 @@ import kz.spoonacular.domain.usecase.RecipeFromIngredientsUseCase
  */
 class FridgeViewModel(
     val savedStateHandle: SavedStateHandle,
-    private val useCase: RecipeFromIngredientsUseCase,
-    private val ingsUseCase: IngredientsSearchUseCase
+    private val useCase: RecipeFromIngredientsUseCase
 ) : ViewModel() {
 
     companion object {
@@ -23,14 +22,27 @@ class FridgeViewModel(
         private const val UPDATE_KEY = "UPDATE_KEY"
     }
 
-    fun getIngredients(): List<String> = savedStateHandle[INGREDIENTS_KEY] ?: emptyList()
+    fun getIngredients(): MutableList<String> = savedStateHandle[INGREDIENTS_KEY] ?: mutableListOf()
 
-    val ingredientsLiveData: LiveData<List<String>> = savedStateHandle.getLiveData(INGREDIENTS_KEY)
+    val ingredientsLiveData: LiveData<MutableList<String>> = savedStateHandle.getLiveData(INGREDIENTS_KEY)
 
     private fun isUpdated(): Boolean = savedStateHandle[UPDATE_KEY] ?: false
 
     fun setIngredients(ingredients: List<String>) {
-        savedStateHandle[INGREDIENTS_KEY] = ingredients
+        val actualList = getIngredients()
+        ingredients.forEach { ingredient ->
+            if (!actualList.contains(ingredient)) {
+                actualList.add(ingredient)
+            }
+        }
+        savedStateHandle[INGREDIENTS_KEY] = actualList
+        setUpdated(false)
+    }
+
+    fun removeIngredient(ingredient: String) {
+        val actualList = getIngredients()
+        actualList.remove(ingredient)
+        savedStateHandle[INGREDIENTS_KEY] = actualList
         setUpdated(false)
     }
 
@@ -46,10 +58,6 @@ class FridgeViewModel(
     val liveDataLoadingState: LiveData<LoadingState>
         get() = _liveDataLoadingState
 
-    private val _liveDataShowToast = MutableLiveData<Either<IngredientsResponse>>()
-    val liveDataShowToast: LiveData<Either<IngredientsResponse>>
-        get() = _liveDataShowToast
-
     init {
         searchRecipes()
     }
@@ -63,30 +71,21 @@ class FridgeViewModel(
         }
         viewModelScope.launch {
             _liveDataLoadingState.value = LoadingState.ShowLoading
-            when (val request = useCase.getRecipeFromIngredients(*getIngredients().toTypedArray())) {
-                is Either.Success -> {
-                    setUpdated(true)
-                    _liveData.value = Either.Success(request.response)
-                }
-                is Either.Error -> {
-                    setUpdated(false)
-                    _liveData.value = Either.Error(request.error)
+            if (getIngredients().isEmpty()) {
+                _liveData.value = Either.Error("Please, choose some ingredients")
+            } else {
+                when (val request = useCase.getRecipeFromIngredients(*getIngredients().toTypedArray())) {
+                    is Either.Success -> {
+                        setUpdated(true)
+                        _liveData.value = Either.Success(request.response)
+                    }
+                    is Either.Error -> {
+                        setUpdated(false)
+                        _liveData.value = Either.Error(request.error)
+                    }
                 }
             }
             _liveDataLoadingState.value = LoadingState.HideLoading
-        }
-    }
-
-    fun searchIngredients(name: String) {
-        viewModelScope.launch {
-            when (val request = ingsUseCase.getIngredientsBySearch(name)) {
-                is Either.Success -> {
-                    _liveDataShowToast.value = Either.Success(request.response)
-                }
-                is Either.Error -> {
-                    _liveDataShowToast.value = Either.Error(request.error)
-                }
-            }
         }
     }
 

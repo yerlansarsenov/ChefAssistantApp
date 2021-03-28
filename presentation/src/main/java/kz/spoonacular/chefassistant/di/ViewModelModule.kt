@@ -2,6 +2,7 @@ package kz.spoonacular.chefassistant.di
 
 import kz.spoonacular.chefassistant.ui.detailActivity.DetailViewModel
 import kz.spoonacular.chefassistant.ui.fridgeRecipes.FridgeViewModel
+import kz.spoonacular.chefassistant.ui.fridgeRecipes.ingredients.IngredientsViewModel
 import kz.spoonacular.chefassistant.ui.savedRecipes.SavedViewModel
 import kz.spoonacular.chefassistant.ui.searchRecipes.SearchViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -22,8 +23,7 @@ val viewModelModule = module {
     viewModel {
         FridgeViewModel(
             savedStateHandle = get(),
-            useCase = get(),
-            ingsUseCase = get()
+            useCase = get()
         )
     }
 
@@ -39,6 +39,12 @@ val viewModelModule = module {
             savedStateHandle = get(),
             useCase = get(),
             saveUseCase = get()
+        )
+    }
+
+    viewModel {
+        IngredientsViewModel(
+            ingsUseCase = get()
         )
     }
 

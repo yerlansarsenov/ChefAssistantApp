@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/ErrorTextStyle"
-        android:text="@string/oop_something_went_wrong"
+        android:text="@string/oops_something_went_wrong"
         android:textSize="30sp"
         android:layout_marginBottom="50dp"
         />

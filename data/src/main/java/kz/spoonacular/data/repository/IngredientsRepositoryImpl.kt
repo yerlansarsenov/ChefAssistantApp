@@ -12,7 +12,7 @@ class IngredientsRepositoryImpl(
 ): IngredientsRepository {
     override suspend fun getIngredientsByQuery(name: String): Either<IngredientsResponse> {
         try {
-            val response = api.getIngredientsBySearchAsync(name).await()
+            val response = api.getIngredientsBySearchAsync(name)
             if (response.isSuccessful) {
                 response.body().apply {
                     return if (this != null && this.number != null) {

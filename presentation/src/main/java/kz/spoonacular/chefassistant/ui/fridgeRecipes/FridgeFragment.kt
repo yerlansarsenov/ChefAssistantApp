@@ -5,20 +5,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import kz.spoonacular.chefassistant.R
-import kz.spoonacular.chefassistant.extensions.showToast
+import kz.spoonacular.chefassistant.extensions.intentFor
 import kz.spoonacular.chefassistant.model.LoadingState
-import kz.spoonacular.chefassistant.ui.adapter.RecipesAdapter
 import kz.spoonacular.chefassistant.ui.adapter.RecipesByIngrAdapter
 import kz.spoonacular.chefassistant.ui.common.BaseFragment
+import kz.spoonacular.chefassistant.ui.detailActivity.DetailActivity
+import kz.spoonacular.chefassistant.ui.detailActivity.RECIPE_ID_KEY
+import kz.spoonacular.chefassistant.ui.fridgeRecipes.ingredients.IngredientsDialogFragment
 import kz.spoonacular.domain.model.Either
 import org.koin.androidx.viewmodel.ext.android.viewModel
+
+private const val SEARCH_INGREDIENTS_DIALOG = "SEARCH_INGREDIENTS_DIALOG"
 
 /**
  * Created by Sarsenov Yerlan on 02.02.2021.
@@ -28,7 +31,7 @@ class FridgeFragment: BaseFragment() {
     private val viewModel: FridgeViewModel by viewModel()
 
     private val recipesAdapter: RecipesByIngrAdapter by lazy {
-        RecipesByIngrAdapter()
+        RecipesByIngrAdapter(::openRecipeDetail)
     }
 
     private lateinit var recyclerView: RecyclerView
@@ -49,14 +52,16 @@ class FridgeFragment: BaseFragment() {
         chipGroup = view.findViewById(R.id.chip_group_fridge)
         viewModel.ingredientsLiveData.observe(viewLifecycleOwner) { list ->
             chipGroup.removeAllViews()
-            list.forEach {
+            list.forEach { item ->
                 val chip = Chip(context)
                 chip.apply {
-                    text = it
+                    text = item
                     isCloseIconVisible = true
                     isCheckable = false
                     isClickable = false
                     setOnCloseIconClickListener {
+                        viewModel.removeIngredient(item)
+                        viewModel.searchRecipes()
                         chipGroup.removeView(chip)
                     }
                 }
@@ -72,19 +77,14 @@ class FridgeFragment: BaseFragment() {
         val ingredientsImageView = view.findViewById<ImageView>(R.id.ingredients_image_view_fridge)
         ingredientsImageView.setOnClickListener {
             // todo Show IngredientsDialogFragment
-            viewModel.searchIngredients("apple")
-            val ings = listOf("apple")
-            viewModel.setIngredients(ings)
-        }
-        viewModel.liveDataShowToast.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is Either.Success -> {
-                    showToast("Success! ${state.response.number}")
-                }
-                is Either.Error -> {
-                    showToast(state.error)
-                }
+            val dialog = IngredientsDialogFragment()
+            dialog.setListener { name ->
+                val ings = listOf(name)
+                viewModel.setIngredients(ings)
+                viewModel.searchRecipes()
+                dialog.dismiss()
             }
+            dialog.show(parentFragmentManager, SEARCH_INGREDIENTS_DIALOG)
         }
         viewModel.liveDataLoadingState.observe(viewLifecycleOwner) { state ->
             when (state) {
@@ -110,12 +110,19 @@ class FridgeFragment: BaseFragment() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
         recyclerView.apply {
             adapter = null
             layoutManager = null
         }
+        super.onDestroyView()
+    }
+
+    private fun openRecipeDetail(id: Int) {
+        val intent = intentFor<DetailActivity>(
+            RECIPE_ID_KEY to id
+        )
+        startActivity(intent)
     }
 
 }

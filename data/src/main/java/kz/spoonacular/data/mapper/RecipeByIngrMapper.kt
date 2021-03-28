@@ -28,7 +28,7 @@ class RecipeByIngrMapper: Mapper<RecipeByIngredientsData, RecipeByIngredients> {
     inner class IngredientsDetailedMapper: Mapper<IngredientDetailedData, IngredientDetailed> {
         override fun map(model: IngredientDetailedData): IngredientDetailed {
             return IngredientDetailed(
-                aisle = model.aisle,
+                aisle = model.aisle ?: "",
                 amount = model.amount,
                 extendedName = model.extendedName ?: model.name,
                 id = model.id,

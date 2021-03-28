@@ -24,18 +24,15 @@ abstract class BaseFragment: Fragment() {
         progressBar = view.findViewById(R.id.progress_bar)
     }
 
-    override fun onDestroy() {
-        progressBar?.let {
-            return@let null
-        }
-        errorLayout?.let {
-            return@let null
-        }
-        super.onDestroy()
+    override fun onDestroyView() {
+        progressBar = null
+        errorLayout = null
+        super.onDestroyView()
     }
 
     protected fun showLoading() {
         progressBar?.visibility = View.VISIBLE
+        hideError()
     }
 
     protected fun hideLoading() {

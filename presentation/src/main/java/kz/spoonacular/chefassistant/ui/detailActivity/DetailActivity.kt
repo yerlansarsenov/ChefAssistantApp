@@ -30,6 +30,8 @@ class DetailActivity: AppCompatActivity() {
 
     private val errorLayout: LinearLayout by lazy { findViewById(R.id.error_layout) }
 
+    private val toolbarTitle: TextView by lazy { findViewById(R.id.toolbar_details_textview) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
@@ -48,13 +50,16 @@ class DetailActivity: AppCompatActivity() {
             when (state) {
                 is Either.Success -> {
                     state.response.apply {
-                        showToast(this.title)
-                        viewModel.insertRecipe(this)
+                        // showToast(this.title)
+                        // viewModel.insertRecipe(this)
+                        toolbarTitle.text = this.title
+
                     }
                 }
                 is Either.Error -> {
                     showError(state.error)
                 }
+                else -> {}
             }
         }
     }

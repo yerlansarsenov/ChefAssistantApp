@@ -72,12 +72,12 @@ class SavedFragment: BaseFragment() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
         recyclerView.apply {
             adapter = null
             layoutManager = null
         }
+        super.onDestroyView()
     }
 
     private fun openRecipeDetail(id: Int) {

@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class IngredientDetailedData(
     @SerializedName("aisle")
-    val aisle: String,
+    val aisle: String?,
     @SerializedName("amount")
     val amount: Float,
     @SerializedName("extendedName")
