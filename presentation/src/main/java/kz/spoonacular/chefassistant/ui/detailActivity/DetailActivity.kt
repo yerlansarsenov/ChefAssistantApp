@@ -69,6 +69,8 @@ class DetailActivity : AppCompatActivity() {
             }
         }
         viewModel.liveDataMovie.observe(this) { state ->
+            if (state == null)
+                return@observe
             when (val first = state.first) {
                 is Either.Success -> {
                     first.response.apply {
@@ -80,7 +82,8 @@ class DetailActivity : AppCompatActivity() {
                             }
                         }
                         toolbarTitle.title = this.title
-                        posterImageView.setImageWithUrl(this.image)
+                        if (this.image.isNotEmpty())
+                            posterImageView.setImageWithUrl(this.image)
                         ingredientsAdapter.submitList(this.extendedIngredients)
                         ingredientsAdapter.notifyDataSetChanged()
                         detailsTimeText.text = "${this.cookingMinutes} min"

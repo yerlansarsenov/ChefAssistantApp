@@ -58,10 +58,10 @@ class DetailViewModel(
 
     fun insertRecipe(recipeDetailed: RecipeDetailed) {
         viewModelScope.launch {
-            val request = saveUseCase.insertRecipe(recipeDetailed)
-            when (request)
+            saveUseCase.insertRecipe(recipeDetailed)
             _liveDataShowToast.value = "Successfully added to local memory"
             _liveDataShowToast.value = null
+            _livaDataMovie.value = null
             searchRecipeById(recipeDetailed.id)
         }
     }
