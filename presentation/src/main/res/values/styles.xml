@@ -43,5 +43,20 @@
         <item name="android:textColorHint">@color/gray</item>
     </style>
 
+    <style name="CoordinatorToolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="titleTextColor">@color/white</item>
+        <item name="fontFamily">@font/pt_mono</item>
+    </style>
+
+    <style name="CollapsingStyle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/white</item>
+        <item name="fontFamily">@font/pt_mono</item>
+    </style>
+
+    <style name="ExpandedStyle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/white</item>
+        <item name="fontFamily">@font/pt_mono</item>
+        <item name="android:textSize">34sp</item>
+    </style>
 
 </resources>

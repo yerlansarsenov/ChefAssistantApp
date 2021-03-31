@@ -5,4 +5,8 @@
     <string name="saved_recipes">Saved recipes</string>
     <string name="searching_recipes">Searching recipes</string>
     <string name="recipe">Recipe</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="add_to_my_recipes">add to my recipes</string>
+
+    <string name="appbar_scrolling_view_behavior" translatable="false">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
 </resources>

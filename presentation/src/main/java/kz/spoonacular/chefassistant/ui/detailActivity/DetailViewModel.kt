@@ -1,5 +1,6 @@
 package kz.spoonacular.chefassistant.ui.detailActivity
 
+import android.util.Log
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import kz.spoonacular.chefassistant.model.LoadingState
@@ -17,29 +18,37 @@ class DetailViewModel(
     private val saveUseCase: SavedRecipesUseCase
 ): ViewModel() {
 
-    private val _livaDataMovie = MutableLiveData<Either<RecipeDetailed>>()
-    val liveDataMovie: LiveData<Either<RecipeDetailed>>
+    private val _livaDataMovie = MutableLiveData<Pair<Either<RecipeDetailed>, Boolean>>()
+    val liveDataMovie: LiveData<Pair<Either<RecipeDetailed>, Boolean>>
         get() = _livaDataMovie
 
     private val _liveDataLoadingState = MutableLiveData<LoadingState>()
     val liveDataLoadingState: LiveData<LoadingState>
         get() = _liveDataLoadingState
 
+    private val _liveDataShowToast = MutableLiveData<String?>()
+    val liveDataShowToast: LiveData<String?>
+        get() = _liveDataShowToast
+
     fun searchRecipeById(id: Int) {
-        if (_livaDataMovie.value != null && _livaDataMovie.value !is Either.Error)
+        if (_livaDataMovie.value != null && _livaDataMovie.value!!.first !is Either.Error) {
+            _liveDataLoadingState.value = LoadingState.HideLoading
             return
+        }
         viewModelScope.launch {
             _liveDataLoadingState.value = LoadingState.ShowLoading
             val dbRequest = saveUseCase.getSavedRecipeById(id)
             if (dbRequest != null && dbRequest.title.isNotEmpty()) {
-                _livaDataMovie.value = Either.Success(dbRequest)
+                _livaDataMovie.value = Either.Success(dbRequest) to true
+                Log.e(this.javaClass.simpleName, "searchRecipeById: DataBase")
             } else {
                 when (val serverRequest = useCase.getRecipeById(id)) {
                     is Either.Success -> {
-                        _livaDataMovie.value = Either.Success(serverRequest.response)
+                        _livaDataMovie.value = Either.Success(serverRequest.response) to false
+                        Log.e(this.javaClass.simpleName, "searchRecipeById: Network")
                     }
                     is Either.Error -> {
-                        _livaDataMovie.value = Either.Error(serverRequest.error)
+                        _livaDataMovie.value = Either.Error(serverRequest.error) to false
                     }
                 }
             }
@@ -49,7 +58,11 @@ class DetailViewModel(
 
     fun insertRecipe(recipeDetailed: RecipeDetailed) {
         viewModelScope.launch {
-            saveUseCase.insertRecipe(recipeDetailed)
+            val request = saveUseCase.insertRecipe(recipeDetailed)
+            when (request)
+            _liveDataShowToast.value = "Successfully added to local memory"
+            _liveDataShowToast.value = null
+            searchRecipeById(recipeDetailed.id)
         }
     }
 

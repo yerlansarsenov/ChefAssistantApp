@@ -1,6 +1,5 @@
 package kz.spoonacular.chefassistant.ui.fridgeRecipes.ingredients
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kz.spoonacular.chefassistant.R
-import kz.spoonacular.chefassistant.extensions.setImageWithUrl
 import kz.spoonacular.chefassistant.extensions.setImageWithUrlAndFit
 import kz.spoonacular.domain.model.recipeByIngredients.ingredient.IngredientItem
 
