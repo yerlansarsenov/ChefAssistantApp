@@ -1,9 +1,6 @@
 package kz.spoonacular.data.di
 
-import kz.spoonacular.data.mapper.IngredientsResponseMapper
-import kz.spoonacular.data.mapper.RecipeByIngrMapper
-import kz.spoonacular.data.mapper.RecipeDetailedMapper
-import kz.spoonacular.data.mapper.RecipeMapper
+import kz.spoonacular.data.mapper.*
 import org.koin.dsl.module
 
 /**
@@ -15,4 +12,5 @@ val mapperModule = module {
     factory { RecipeMapper() }
     factory { RecipeByIngrMapper() }
     factory { IngredientsResponseMapper() }
+    factory { RecipeAutocompleteMapper() }
 }

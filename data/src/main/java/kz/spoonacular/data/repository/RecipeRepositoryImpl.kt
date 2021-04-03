@@ -2,6 +2,7 @@ package kz.spoonacular.data.repository
 
 import android.util.Log
 import kz.spoonacular.data.api.RecipeApi
+import kz.spoonacular.data.mapper.RecipeAutocompleteMapper
 import kz.spoonacular.data.mapper.RecipeByIngrMapper
 import kz.spoonacular.data.mapper.RecipeDetailedMapper
 import kz.spoonacular.data.mapper.RecipeMapper
@@ -21,7 +22,8 @@ class RecipeRepositoryImpl(
     private val api: RecipeApi,
     private val recipeMapper: RecipeMapper,
     private val recipeDetailedMapper: RecipeDetailedMapper,
-    private val recipeByIngrMapper: RecipeByIngrMapper
+    private val recipeByIngrMapper: RecipeByIngrMapper,
+    private val recipeAutocompleteMapper: RecipeAutocompleteMapper
 ): RecipeRepository {
 
 
@@ -35,6 +37,8 @@ class RecipeRepositoryImpl(
             if (response.isSuccessful) {
                 if (response.body() == null || response.body()!!.number == null)
                     return Either.Error(response.message())
+                if (response.body()!!.results.isEmpty())
+                    return Either.Error("Nothing found :(")
                 val list = response.body()!!.results.map {
                     recipeMapper.map(it)
                 }
@@ -50,7 +54,7 @@ class RecipeRepositoryImpl(
         try {
             val response = api.getInfoRecipeById(id)
             if (response.isSuccessful) {
-                if (response.body() == null || response.body()!!.id == null)
+                if (response.body() == null || response.body()!!.title == null)
                     return Either.Error(response.message())
                 return Either.Success(recipeDetailedMapper.map(response.body()!!))
             }
@@ -64,13 +68,31 @@ class RecipeRepositoryImpl(
         try {
             val response = api.getRecipesByIngredients(getArgsSequence(args = ingredients))
             if (response.isSuccessful) {
-                if (response.body()!!.isNullOrEmpty())
+                if (response.body() == null)
                     return Either.Error(response.message())
+                if (response.body()!!.isEmpty())
+                    return Either.Error("Nothing found :(")
                 return Either.Success(response.body()!!.map { recipeByIngrMapper.map(it) })
             }
             return Either.Error(response.message())
         } catch (e: Exception) {
             Log.e(TAG, "getRecipesByIngredients: ${e.message.toString()}")
+            return Either.Error(e.message.toString())
+        }
+    }
+
+    override suspend fun getRecipesAutocomplete(query: String): Either<List<Recipe>> {
+        try {
+            val response = api.getRecipesAutocomplete(query = query)
+            if (response.isSuccessful) {
+                if (response.body() == null)
+                    return Either.Error(response.message())
+                if (response.body()!!.isEmpty())
+                    return Either.Error("Nothing found :(")
+                return Either.Success(response.body()!!.map { recipeAutocompleteMapper.map(it) })
+            }
+            return Either.Error(response.message())
+        } catch (e: Exception) {
             return Either.Error(e.message.toString())
         }
     }

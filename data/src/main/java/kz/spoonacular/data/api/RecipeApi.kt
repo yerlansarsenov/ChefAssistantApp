@@ -2,6 +2,7 @@ package kz.spoonacular.data.api
 
 import kz.spoonacular.data.model.reciepeDetails.RecipeDetailedData
 import kz.spoonacular.data.model.recipeByIngredients.RecipeByIngredientsData
+import kz.spoonacular.data.model.recipes.RecipeAutocomplete
 import kz.spoonacular.data.model.recipes.RecipesResponseData
 import retrofit2.Response
 import retrofit2.http.GET
@@ -12,7 +13,7 @@ import retrofit2.http.Query
  * Created by Sarsenov Yerlan on 30.01.2021.
  */
 interface RecipeApi {
-    // https://api.spoonacular.com/recipes/complexSearch?apiKey=4bcf985834f14e98bcf8a6cfe64d6988
+    // https://api.spoonacular.com/recipes/complexSearch?apiKey=
     @GET("recipes/complexSearch")
     suspend fun getRecipesBySearch(
         @Query("query") query: String,
@@ -68,11 +69,15 @@ interface RecipeApi {
      * Vietnamese
      */
 
-    // https://api.spoonacular.com/recipes/715497/information?apiKey=4bcf985834f14e98bcf8a6cfe64d6988
+    // https://api.spoonacular.com/recipes/715497/information?apiKey=
     @GET("recipes/{id}/information")
     suspend fun getInfoRecipeById(@Path("id") id: Int) : Response<RecipeDetailedData>
 
-    // https://api.spoonacular.com/recipes/findByIngredients?apiKey=4bcf985834f14e98bcf8a6cfe64d6988&ingredients=apples,flour,sugar
+    // https://api.spoonacular.com/recipes/findByIngredients?apiKey=&ingredients=apples,flour,sugar
     @GET("recipes/findByIngredients")
     suspend fun getRecipesByIngredients(@Query("ingredients") args: String) : Response<List<RecipeByIngredientsData>>
+
+    // https://api.spoonacular.com/recipes/autocomplete?query=chick&apiKey=
+    @GET("recipes/autocomplete")
+    suspend fun getRecipesAutocomplete(@Query("autocomplete") query: String) : Response<List<RecipeAutocomplete>>
 }

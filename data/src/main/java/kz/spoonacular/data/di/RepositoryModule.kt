@@ -18,7 +18,8 @@ val repositoryModule = module {
             api = get(),
             recipeDetailedMapper = get(),
             recipeMapper = get(),
-            recipeByIngrMapper = get()
+            recipeByIngrMapper = get(),
+            recipeAutocompleteMapper = get()
         )
     }
 

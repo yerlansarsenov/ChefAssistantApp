@@ -20,4 +20,6 @@ interface RecipeRepository {
 
     suspend fun getRecipesByIngredients(vararg ingredients: String): Either<List<RecipeByIngredients>>
 
+    suspend fun getRecipesAutocomplete(query: String): Either<List<Recipe>>
+
 }
