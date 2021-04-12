@@ -5,7 +5,9 @@ import android.content.Intent
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.BaseTransientBottomBar
 import kz.spoonacular.chefassistant.customViews.CustomLoadingLayout
+import kz.spoonacular.chefassistant.customViews.custom_snackbar.CustomSnackbar
 
 fun <T : Fragment> T.showProcessLoading(): AlertDialog? {
     val loadingLayout = CustomLoadingLayout(activity!!)
@@ -18,7 +20,8 @@ fun <T : Fragment> T.showProcessLoading(): AlertDialog? {
 }
 
 fun <T : Fragment> T.showToast(text: String) {
-    Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
+    // Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
+    activity!!.showToast(text)
 }
 
 /**

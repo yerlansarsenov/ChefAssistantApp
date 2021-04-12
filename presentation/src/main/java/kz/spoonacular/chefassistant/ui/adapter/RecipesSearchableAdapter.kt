@@ -1,4 +1,4 @@
-package kz.spoonacular.chefassistant.ui.fridgeRecipes.ingredients
+package kz.spoonacular.chefassistant.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -11,16 +11,17 @@ import androidx.recyclerview.widget.RecyclerView
 import kz.spoonacular.chefassistant.R
 import kz.spoonacular.chefassistant.extensions.setImageWithUrlAndFit
 import kz.spoonacular.domain.model.recipeByIngredients.ingredient.IngredientItem
+import kz.spoonacular.domain.model.recipes.Recipe
 
 private const val TAG = "IngredientsAdapter"
 
-class IngredientsAdapter(
+class RecipesSearchableAdapter(
     val listener: (text: String) -> Unit
-): ListAdapter<IngredientItem, IngredientsAdapter.IngredientViewHolder>(IngredientDiffUtil()) {
+): ListAdapter<Recipe, RecipesSearchableAdapter.IngredientViewHolder>(IngredientDiffUtil()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IngredientViewHolder =
         IngredientViewHolder(
             LayoutInflater.from(parent.context).inflate(
-                R.layout.it_search_ingredient, parent, false
+                R.layout.it_search_recipe, parent, false
             )
         )
 
@@ -29,29 +30,26 @@ class IngredientsAdapter(
     }
 
     inner class IngredientViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        private val ingredientTextView: AppCompatTextView = itemView.findViewById(R.id.search_ingredient_textview)
-        private val ingredientImageView: AppCompatImageView = itemView.findViewById(R.id.search_ingredient_imageview)
+        private val ingredientTextView: AppCompatTextView = itemView.findViewById(R.id.search_recipe_textview)
 
-        fun bind(item: IngredientItem) {
+        fun bind(item: Recipe) {
             item.apply {
-                ingredientTextView.text = name
-                val baseImagesUrl = "https://spoonacular.com/ingredientImages"
-                ingredientImageView.setImageWithUrlAndFit("$baseImagesUrl/$image")
+                ingredientTextView.text = title
                 itemView.setOnClickListener {
-                    listener.invoke(name)
+                    listener.invoke(title)
                 }
             }
         }
     }
 }
 
-class IngredientDiffUtil: DiffUtil.ItemCallback<IngredientItem>() {
-    override fun areItemsTheSame(oldItem: IngredientItem, newItem: IngredientItem): Boolean {
+class IngredientDiffUtil: DiffUtil.ItemCallback<Recipe>() {
+    override fun areItemsTheSame(oldItem: Recipe, newItem: Recipe): Boolean {
         return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem: IngredientItem, newItem: IngredientItem): Boolean {
-        return oldItem.name == newItem.name
+    override fun areContentsTheSame(oldItem: Recipe, newItem: Recipe): Boolean {
+        return oldItem.title == newItem.title
     }
 
 }

@@ -3,6 +3,7 @@ package kz.spoonacular.chefassistant.ui.fridgeRecipes
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import kz.spoonacular.chefassistant.model.LoadingState
+import kz.spoonacular.chefassistant.ui.savedRecipes.SavedViewModel
 import kz.spoonacular.domain.model.Either
 import kz.spoonacular.domain.model.recipeByIngredients.RecipeByIngredients
 import kz.spoonacular.domain.model.recipeByIngredients.ingredient.IngredientsResponse
@@ -20,9 +21,25 @@ class FridgeViewModel(
     companion object {
         private const val INGREDIENTS_KEY = "INGREDIENTS_KEY"
         private const val UPDATE_KEY = "UPDATE_KEY"
+        private const val TYPES_KEY = "TYPES_KEY"
+        private const val CUISINES_KEY = "CUISINES_KEY"
     }
 
-    fun getIngredients(): MutableList<String> = savedStateHandle[INGREDIENTS_KEY] ?: mutableListOf()
+    fun setTypes(types: List<String>) {
+        savedStateHandle[TYPES_KEY] = types
+        setUpdated(false)
+    }
+
+    fun setCuisines(cuisines: List<String>) {
+        savedStateHandle[CUISINES_KEY] = cuisines
+        setUpdated(false)
+    }
+
+    fun getTypes(): List<String> = savedStateHandle[TYPES_KEY] ?: emptyList()
+
+    fun getCuisines(): List<String> = savedStateHandle[CUISINES_KEY] ?: emptyList()
+
+    private fun getIngredients(): MutableList<String> = savedStateHandle[INGREDIENTS_KEY] ?: mutableListOf()
 
     val ingredientsLiveData: LiveData<MutableList<String>> = savedStateHandle.getLiveData(INGREDIENTS_KEY)
 
@@ -74,7 +91,13 @@ class FridgeViewModel(
             if (getIngredients().isEmpty()) {
                 _liveData.value = Either.Error("Please, choose some ingredients")
             } else {
-                when (val request = useCase.getRecipeFromIngredients(*getIngredients().toTypedArray())) {
+                when (
+                    val request = useCase.getRecipeFromIngredients(
+                                type = getTypes(),
+                                cuisine = getCuisines(),
+                                ingredients = getIngredients().toTypedArray()
+                        )
+                ) {
                     is Either.Success -> {
                         setUpdated(true)
                         _liveData.value = Either.Success(request.response)

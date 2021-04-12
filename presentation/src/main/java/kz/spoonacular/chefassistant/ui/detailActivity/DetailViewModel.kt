@@ -66,4 +66,11 @@ class DetailViewModel(
         }
     }
 
+    fun deleteRecipe(recipeDetailed: RecipeDetailed) {
+        viewModelScope.launch {
+            // todo: delete recipe
+            // todo: need to check whether this detailed activity is from savedFragment
+        }
+    }
+
 }

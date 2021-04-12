@@ -3,10 +3,11 @@ package kz.spoonacular.chefassistant.extensions
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.snackbar.BaseTransientBottomBar
 import kz.spoonacular.chefassistant.R
 import kz.spoonacular.chefassistant.customViews.CustomMatrixView
+import kz.spoonacular.chefassistant.customViews.custom_snackbar.CustomSnackbar
 
 inline fun <reified T: AppCompatActivity> AppCompatActivity.intentFor(vararg pairs: Pair<String, Any?>): Intent {
     val intent = Intent(this, T::class.java)
@@ -17,7 +18,18 @@ inline fun <reified T: AppCompatActivity> AppCompatActivity.intentFor(vararg pai
 }
 
 fun <T: Activity> T.showToast(text: String) {
-    Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+    //Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+    val snackBar = CustomSnackbar.instance(findViewById(android.R.id.content), text)
+    // val view = snackBar.view
+    // val params = view.layoutParams as FrameLayout.LayoutParams
+    snackBar.apply {
+        duration = BaseTransientBottomBar.LENGTH_LONG
+        show()
+    }
+}
+
+fun <T: Activity> T.customSnackbar(text: String): CustomSnackbar {
+    return CustomSnackbar.instance(findViewById(android.R.id.content), text)
 }
 
 fun <T: Activity> T.showProcessLoading() : androidx.appcompat.app.AlertDialog {

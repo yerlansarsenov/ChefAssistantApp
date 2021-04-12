@@ -18,7 +18,11 @@ interface RecipeRepository {
 
     suspend fun getRecipeById(id: Int): Either<RecipeDetailed>
 
-    suspend fun getRecipesByIngredients(vararg ingredients: String): Either<List<RecipeByIngredients>>
+    suspend fun getRecipesByIngredients(
+        cuisine: List<String>,
+        type: List<String>,
+        vararg ingredients: String
+    ): Either<List<RecipeByIngredients>>
 
     suspend fun getRecipesAutocomplete(query: String): Either<List<Recipe>>
 

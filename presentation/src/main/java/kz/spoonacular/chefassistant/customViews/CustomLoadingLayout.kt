@@ -15,6 +15,8 @@ import android.widget.TextView
 
 private const val LOADING_TEXT = "Loading..."
 
+///////   DEPRECATED:::  ====> reason: memory leak is appeared while using this custom loading layout
+
 class CustomLoadingLayout: LinearLayout {
 
     constructor(context: Context) : super(context) {

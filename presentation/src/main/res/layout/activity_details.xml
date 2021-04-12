@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    tools:context=".ui.detailActivity.DetailActivity"
     >
 
     <com.google.android.material.appbar.AppBarLayout
@@ -59,6 +60,7 @@
                 android:visibility="gone" />
 
             <androidx.core.widget.NestedScrollView
+                android:id="@+id/main_nested_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -169,17 +171,7 @@
                         android:nestedScrollingEnabled="false"
                         />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/details_add_to_saved"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:visibility="gone"
-                        android:text="@string/add_to_my_recipes"
-                        app:layout_constraintHorizontal_bias="0.75"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/details_ingredients_recycler" />
+
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -195,5 +187,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/details_add_to_saved"
+        android:visibility="gone"
+        android:layout_gravity="bottom|end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="@string/add_to_my_recipes"
+        android:textColor="@color/white"
+        android:layout_marginBottom="5dp"
+        android:layout_marginEnd="5dp"
+        android:contentDescription="@string/add_to_my_recipes"
+        />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

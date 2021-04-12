@@ -10,7 +10,8 @@ import kz.spoonacular.domain.repository.SavedRecipesRepository
  * Created by Sarsenov Yerlan on 17.02.2021.
  */
 class SavedRecipesRepositoryImpl(
-    private val dao: RecipesDao
+    private val dao: RecipesDao,
+    private val recipeDetailedToRecipeMapperDB: RecipeDetailedToRecipeMapperDB
 ): SavedRecipesRepository {
 
     /**
@@ -26,6 +27,18 @@ class SavedRecipesRepositoryImpl(
     override suspend fun getRecipes(): List<Recipe> {
         return dao.getAllRecipes().map { recipe ->
             recipeMapperDB.mapTo(recipe)
+        }
+    }
+
+    override suspend fun getRecipes(types: List<String>, cuisines: List<String>): List<Recipe> {
+        if (types.isEmpty() && cuisines.isEmpty())
+            return getRecipes()
+        return dao.getAllRecipesDetailed().map { recipe ->
+            recipeDetailedMapperDB.mapTo(recipe)
+        }.filter { recipe ->
+            types.intersect(recipe.dishTypes).isNotEmpty() || cuisines.intersect(recipe.cuisines).isNotEmpty()
+        }.map { recipe ->
+            recipeDetailedToRecipeMapperDB.map(recipe)
         }
     }
 
@@ -84,46 +97,37 @@ class SavedRecipesRepositoryImpl(
 
         dao.insertRecipeDetails(recipeDetailedMapperDB.mapFrom(recipeDetailed))
 
-//        recipeDetailed.apply {
-//            analyzedInstructions.forEach { analyzedInstruction ->
-//                dao.insertAnalyzed(analyzedInstrMapperDB.mapFrom(analyzedInstruction))
-//                analyzedInstruction.apply {
-//                    steps.forEach { step ->
-//                        analyzedInstrMapperDB.insertSteps(step)
-//                        step.apply {
-//                            equipments.forEach { equipment ->
-//                                stepsMapperDB.insertEquipment(equipment)
-//                            }
-//                            ingredients.forEach { ingredient ->
-//                                stepsMapperDB.insertIngredient(ingredient)
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//            extendedIngredients.forEach { extended ->
-//                dao.insertExtendedIngr(extendedIngrMapperDB.mapFrom(extended))
-//                extended.apply {
-//                    extendedIngrMapperDB.insertMeasuredId(measures)
-//                    measures.apply {
-//                        measuresMapperDB.insertMetric(this.metric)
-//                        measuresMapperDB.insertUs(this.us)
-//                    }
-//                }
-//            }
-//            winePairing.apply {
-//                dao.insertWinePairing(wineMapperDB.mapFrom(this))
-//            }
-//        }
+/*        recipeDetailed.apply {
+            analyzedInstructions.forEach { analyzedInstruction ->
+                dao.insertAnalyzed(analyzedInstrMapperDB.mapFrom(analyzedInstruction))
+                analyzedInstruction.apply {
+                    steps.forEach { step ->
+                        analyzedInstrMapperDB.insertSteps(step)
+                        step.apply {
+                            equipments.forEach { equipment ->
+                                stepsMapperDB.insertEquipment(equipment)
+                            }
+                            ingredients.forEach { ingredient ->
+                                stepsMapperDB.insertIngredient(ingredient)
+                            }
+                        }
+                    }
+                }
+            }
+            extendedIngredients.forEach { extended ->
+                dao.insertExtendedIngr(extendedIngrMapperDB.mapFrom(extended))
+                extended.apply {
+                    extendedIngrMapperDB.insertMeasuredId(measures)
+                    measures.apply {
+                        measuresMapperDB.insertMetric(this.metric)
+                        measuresMapperDB.insertUs(this.us)
+                    }
+                }
+            }
+            winePairing.apply {
+                dao.insertWinePairing(wineMapperDB.mapFrom(this))
+            }
+        }*/
     }
-
-//    override suspend fun getWinePairingById(id: Int): WinePairing = wineMapperDB.map(dao.getWinePairingById(id))
-//
-//    override suspend fun getExtendedIngr(id: Int): ExtendedIngredient = extendedIngrMapperDB.map(dao.getExtendedIngrById(id))
-//
-//    override suspend fun getStepById(id: Int): Step = stepsMapperDB.map(dao.getStepById(id))
-//
-//    override suspend fun getAnalyzedById(id: Int): AnalyzedInstruction = analyzedInstrMapperDB.map(dao.getAnalyzedById(id))
-
 
 }

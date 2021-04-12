@@ -18,6 +18,7 @@ import kz.spoonacular.chefassistant.ui.common.BaseFragment
 import kz.spoonacular.chefassistant.ui.detailActivity.DetailActivity
 import kz.spoonacular.chefassistant.ui.detailActivity.RECIPE_ID_KEY
 import kz.spoonacular.chefassistant.ui.fridgeRecipes.ingredients.IngredientsDialogFragment
+import kz.spoonacular.chefassistant.ui.searchRecipes.FilterDialogFragment
 import kz.spoonacular.domain.model.Either
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -86,6 +87,14 @@ class FridgeFragment: BaseFragment() {
             }
             dialog.show(parentFragmentManager, SEARCH_INGREDIENTS_DIALOG)
         }
+        val filterImageView = view.findViewById<ImageView>(R.id.filter_image_view_fridge)
+        filterImageView.setOnClickListener {
+            val dialog = FilterDialogFragment.instance(viewModel.getTypes(), viewModel.getCuisines())
+            dialog.setListener { types, cuisines ->
+                onFilteredListener(types, cuisines)
+            }
+            dialog.show(parentFragmentManager, FILTER_DIALOG)
+        }
         viewModel.liveDataLoadingState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is LoadingState.ShowLoading -> {
@@ -110,19 +119,18 @@ class FridgeFragment: BaseFragment() {
         }
     }
 
+    override fun onFilteredListener(types: List<String>, cuisines: List<String>) {
+        viewModel.setTypes(types)
+        viewModel.setCuisines(cuisines)
+        viewModel.searchRecipes()
+    }
+
     override fun onDestroyView() {
         recyclerView.apply {
             adapter = null
             layoutManager = null
         }
         super.onDestroyView()
-    }
-
-    private fun openRecipeDetail(id: Int) {
-        val intent = intentFor<DetailActivity>(
-            RECIPE_ID_KEY to id
-        )
-        startActivity(intent)
     }
 
 }

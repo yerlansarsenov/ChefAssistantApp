@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -14,12 +15,14 @@ import kz.spoonacular.chefassistant.ui.adapter.RecipesAdapter
 import kz.spoonacular.chefassistant.ui.common.BaseFragment
 import kz.spoonacular.chefassistant.ui.detailActivity.DetailActivity
 import kz.spoonacular.chefassistant.ui.detailActivity.RECIPE_ID_KEY
+import kz.spoonacular.chefassistant.ui.searchRecipes.FilterDialogFragment
 import kz.spoonacular.domain.model.Either
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * Created by Sarsenov Yerlan on 02.02.2021.
  */
+
 class SavedFragment: BaseFragment() {
 
     private val viewModel: SavedViewModel by viewModel()
@@ -48,6 +51,17 @@ class SavedFragment: BaseFragment() {
         swipeRefreshLayout.setOnRefreshListener {
             viewModel.getSavedRecipes()
         }
+        val filterImageView = view.findViewById<ImageView>(R.id.filter_image_view_saved)
+        filterImageView.setOnClickListener {
+            val dialog = FilterDialogFragment.instance(
+                types = viewModel.getTypes(),
+                cuisines =  viewModel.getCuisines()
+            )
+            dialog.setListener { types, cuisines ->
+                onFilteredListener(types, cuisines)
+            }
+            dialog.show(parentFragmentManager, FILTER_DIALOG)
+        }
         viewModel.liveDataLoadingState.observe(viewLifecycleOwner) { state ->
             when(state) {
                 is LoadingState.ShowLoading -> {
@@ -72,19 +86,18 @@ class SavedFragment: BaseFragment() {
         }
     }
 
+    override fun onFilteredListener(types: List<String>, cuisines: List<String>) {
+        viewModel.setTypes(types)
+        viewModel.setCuisines(cuisines)
+        viewModel.getSavedRecipes()
+    }
+
     override fun onDestroyView() {
         recyclerView.apply {
             adapter = null
             layoutManager = null
         }
         super.onDestroyView()
-    }
-
-    private fun openRecipeDetail(id: Int) {
-        val intent = intentFor<DetailActivity>(
-            RECIPE_ID_KEY to id
-        )
-        startActivity(intent)
     }
 
 }

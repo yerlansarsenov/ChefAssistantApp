@@ -9,11 +9,14 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.widget.ContentLoadingProgressBar
+import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import kz.spoonacular.chefassistant.R
 import kz.spoonacular.chefassistant.extensions.lazyArg
 import kz.spoonacular.chefassistant.extensions.setImageWithUrl
@@ -45,8 +48,9 @@ class DetailActivity : AppCompatActivity() {
     private val detailsTimeText: AppCompatTextView by lazy { findViewById(R.id.details_time_text) }
     private val detailsHealthText: AppCompatTextView by lazy { findViewById(R.id.details_health_text) }
     private val detailsScoreText: AppCompatTextView by lazy { findViewById(R.id.details_score_text) }
-    private val addToSavedButton: MaterialButton by lazy { findViewById(R.id.details_add_to_saved) }
+    private val addToSavedButton: ExtendedFloatingActionButton by lazy { findViewById(R.id.details_add_to_saved) }
     private val posterImageView: AppCompatImageView by lazy { findViewById(R.id.details_poster) }
+    private val nestedScroller: NestedScrollView by lazy { findViewById(R.id.main_nested_detail) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +62,23 @@ class DetailActivity : AppCompatActivity() {
         swipeRefreshLayout.setOnRefreshListener {
             viewModel.searchRecipeById(recipeId)
         }
+        // todo: Ne rabotaet
+//        nestedScroller.setOnScrollChangeListener(object : NestedScrollView.OnScrollChangeListener {
+//            override fun onScrollChange(
+//                v: NestedScrollView?,
+//                scrollX: Int,
+//                scrollY: Int,
+//                oldScrollX: Int,
+//                oldScrollY: Int
+//            ) {
+//                if (scrollY > oldScrollY + 12 && addToSavedButton.isExtended)
+//                    addToSavedButton.shrink()
+//                if (scrollY < oldScrollY - 12 && !addToSavedButton.isExtended)
+//                    addToSavedButton.extend()
+//                if (scrollY == 0)
+//                    addToSavedButton.extend()
+//            }
+//        })
         viewModel.liveDataLoadingState.observe(this) { state ->
             when (state) {
                 is LoadingState.ShowLoading -> {

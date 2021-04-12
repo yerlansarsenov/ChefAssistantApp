@@ -4,9 +4,7 @@ import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import kz.spoonacular.chefassistant.model.LoadingState
 import kz.spoonacular.domain.model.Either
-import kz.spoonacular.domain.model.reciepeDetails.RecipeDetailed
 import kz.spoonacular.domain.model.recipes.Recipe
-import kz.spoonacular.domain.usecase.SavedRecipesUseCase
 import kz.spoonacular.domain.usecase.SearchUseCase
 
 /**
@@ -55,6 +53,10 @@ class SearchViewModel(
     val liveData: LiveData<Either<List<Recipe>>>
         get() = _liveData
 
+    private val _liveDataSuggestions = MutableLiveData<Either<List<Recipe>>>()
+    val liveDataSuggestions: LiveData<Either<List<Recipe>>>
+        get() = _liveDataSuggestions
+
     private val _liveDataLoadingState = MutableLiveData<LoadingState>()
     val liveDataLoadingState: LiveData<LoadingState>
         get() = _liveDataLoadingState
@@ -84,6 +86,31 @@ class SearchViewModel(
                 }
             }
             _liveDataLoadingState.value = LoadingState.HideLoading
+        }
+    }
+
+    fun getAutocompleteRecipes(query: String) {
+//        viewModelScope.launch {
+//            when(val request = searchUseCase.getRecipeAutocomplete(query = query)) {
+//                // 500 server error
+//                is Either.Success -> {
+//                    _liveDataSuggestions.value = Either.Success(request.response)
+//                }
+//                is Either.Error -> {
+//                    _liveDataSuggestions.value = Either.Error(request.error)
+//                }
+//            }
+//        }
+        viewModelScope.launch {
+            when(val request = searchUseCase.getRecipeByQueryCuisineAndType(query = query, emptyList(), emptyList())) {
+                // 500 server error
+                is Either.Success -> {
+                    _liveDataSuggestions.value = Either.Success(request.response)
+                }
+                is Either.Error -> {
+                    _liveDataSuggestions.value = Either.Error(request.error)
+                }
+            }
         }
     }
 

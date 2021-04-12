@@ -19,15 +19,9 @@ interface SavedRecipesRepository {
 
     suspend fun getRecipes(): List<Recipe>
 
-    suspend fun getRecipeById(id: Int): RecipeDetailed?
+    suspend fun getRecipes(types: List<String>, cuisines: List<String>): List<Recipe>
 
-//    suspend fun getWinePairingById(id: Int): WinePairing
-//
-//    suspend fun getExtendedIngr(id: Int): ExtendedIngredient
-//
-//    suspend fun getStepById(id: Int): Step
-//
-//    suspend fun getAnalyzedById(id: Int): AnalyzedInstruction
+    suspend fun getRecipeById(id: Int): RecipeDetailed?
 
     suspend fun insertRecipe(recipeDetailed: RecipeDetailed)
 }

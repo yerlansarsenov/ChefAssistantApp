@@ -16,6 +16,9 @@ class SavedRecipesUseCase (
 ) {
     suspend fun getSavedRecipes(): List<Recipe> = repository.getRecipes()
 
+    suspend fun getSavedRecipes(types: List<String>, cuisines: List<String>): List<Recipe>
+        = repository.getRecipes(types = types, cuisines = cuisines)
+
     suspend fun getSavedRecipeById(id: Int): RecipeDetailed? = repository.getRecipeById(id)
 
     suspend fun insertRecipe(recipeDetailed: RecipeDetailed) = repository.insertRecipe(recipeDetailed = recipeDetailed)

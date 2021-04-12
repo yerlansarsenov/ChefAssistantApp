@@ -25,7 +25,8 @@ val repositoryModule = module {
 
     single<SavedRecipesRepository> {
         SavedRecipesRepositoryImpl(
-            dao = get()
+            dao = get(),
+            recipeDetailedToRecipeMapperDB = get()
         )
     }
 

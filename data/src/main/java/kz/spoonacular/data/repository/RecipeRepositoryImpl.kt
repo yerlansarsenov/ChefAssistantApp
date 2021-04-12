@@ -64,9 +64,17 @@ class RecipeRepositoryImpl(
         }
     }
 
-    override suspend fun getRecipesByIngredients(vararg ingredients: String): Either<List<RecipeByIngredients>> {
+    override suspend fun getRecipesByIngredients(
+        cuisine: List<String>,
+        type: List<String>,
+        vararg ingredients: String
+    ): Either<List<RecipeByIngredients>> {
         try {
-            val response = api.getRecipesByIngredients(getArgsSequence(args = ingredients))
+            val response = api.getRecipesByIngredients(
+                getArgsSequence(args = ingredients),
+                type = type.toStringArgs(),
+                cuisine = cuisine.toStringArgs()
+            )
             if (response.isSuccessful) {
                 if (response.body() == null)
                     return Either.Error(response.message())

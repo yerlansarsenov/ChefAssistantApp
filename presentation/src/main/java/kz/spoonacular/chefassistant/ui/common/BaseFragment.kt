@@ -7,12 +7,19 @@ import android.widget.TextView
 import androidx.core.widget.ContentLoadingProgressBar
 import androidx.fragment.app.Fragment
 import kz.spoonacular.chefassistant.R
+import kz.spoonacular.chefassistant.extensions.intentFor
 import kz.spoonacular.chefassistant.extensions.showProcessLoading
+import kz.spoonacular.chefassistant.ui.detailActivity.DetailActivity
+import kz.spoonacular.chefassistant.ui.detailActivity.RECIPE_ID_KEY
 
 /**
  * Created by Sarsenov Yerlan on 02.02.2021.
  */
 abstract class BaseFragment: Fragment() {
+
+    companion object {
+        const val FILTER_DIALOG = "FILTER_DIALOG"
+    }
 
     var progressBar: ContentLoadingProgressBar? = null
 
@@ -48,5 +55,14 @@ abstract class BaseFragment: Fragment() {
     protected fun hideError() {
         errorLayout?.visibility = View.GONE
     }
+
+    protected fun openRecipeDetail(id: Int) {
+        val intent = intentFor<DetailActivity>(
+            RECIPE_ID_KEY to id
+        )
+        startActivity(intent)
+    }
+
+    abstract fun onFilteredListener(types: List<String>, cuisines: List<String>)
 
 }

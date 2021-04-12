@@ -21,6 +21,10 @@ abstract class RecipesDao {
     @Query("select * from recipes_saved")
     abstract suspend fun getAllRecipes(): List<RecipesEntity>
 
+    // todo try to use json_contains
+    @Query("select * from recipe_details_entity")
+    abstract suspend fun getAllRecipesDetailed(): List<RecipeDetailsEntity>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun insertRecipes(vararg recipes: RecipesEntity)
 
