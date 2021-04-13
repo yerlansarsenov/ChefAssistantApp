@@ -30,6 +30,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  * Created by Sarsenov Yerlan on 01.02.2021.
  */
 
+// todo https://habr.com/ru/company/badoo/blog/429728/
+
 private const val TAG = "SearchFragment"
 
 class SearchFragment: BaseFragment() {
