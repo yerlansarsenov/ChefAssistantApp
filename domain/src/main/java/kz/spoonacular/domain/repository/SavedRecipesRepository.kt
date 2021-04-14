@@ -1,15 +1,7 @@
 package kz.spoonacular.domain.repository
 
+import kotlinx.coroutines.flow.Flow
 import kz.spoonacular.domain.model.reciepeDetails.RecipeDetailed
-import kz.spoonacular.domain.model.reciepeDetails.analyzedInstr.AnalyzedInstruction
-import kz.spoonacular.domain.model.reciepeDetails.analyzedInstr.Equipment
-import kz.spoonacular.domain.model.reciepeDetails.analyzedInstr.Ingredient
-import kz.spoonacular.domain.model.reciepeDetails.analyzedInstr.Step
-import kz.spoonacular.domain.model.reciepeDetails.extendedIngr.ExtendedIngredient
-import kz.spoonacular.domain.model.reciepeDetails.extendedIngr.Metric
-import kz.spoonacular.domain.model.reciepeDetails.extendedIngr.Us
-import kz.spoonacular.domain.model.reciepeDetails.winePairing.ProductMatche
-import kz.spoonacular.domain.model.reciepeDetails.winePairing.WinePairing
 import kz.spoonacular.domain.model.recipes.Recipe
 
 /**
@@ -19,7 +11,11 @@ interface SavedRecipesRepository {
 
     suspend fun getRecipes(): List<Recipe>
 
+    fun getRecipesFlow(): Flow<List<Recipe>>
+
     suspend fun getRecipes(types: List<String>, cuisines: List<String>): List<Recipe>
+
+    fun getRecipesFlow(types: List<String>, cuisines: List<String>): Flow<List<Recipe>>
 
     suspend fun getRecipeById(id: Int): RecipeDetailed?
 

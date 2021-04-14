@@ -9,14 +9,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kz.spoonacular.chefassistant.R
-import kz.spoonacular.chefassistant.extensions.intentFor
+import kz.spoonacular.chefassistant.extensions.showToast
 import kz.spoonacular.chefassistant.model.LoadingState
 import kz.spoonacular.chefassistant.ui.adapter.RecipesAdapter
 import kz.spoonacular.chefassistant.ui.common.BaseFragment
-import kz.spoonacular.chefassistant.ui.detailActivity.DetailActivity
-import kz.spoonacular.chefassistant.ui.detailActivity.RECIPE_ID_KEY
 import kz.spoonacular.chefassistant.ui.searchRecipes.FilterDialogFragment
-import kz.spoonacular.domain.model.Either
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
@@ -49,7 +46,7 @@ class SavedFragment: BaseFragment() {
         recyclerView.layoutManager = GridLayoutManager(activity, 2)
         val swipeRefreshLayout = view.findViewById<SwipeRefreshLayout>(R.id.swipe_refresh_layout)
         swipeRefreshLayout.setOnRefreshListener {
-            viewModel.getSavedRecipes()
+            swipeRefreshLayout.isRefreshing = false // FIXME: 14.04.2021 correct swiperefreshing
         }
         val filterImageView = view.findViewById<ImageView>(R.id.filter_image_view_saved)
         filterImageView.setOnClickListener {
@@ -74,14 +71,11 @@ class SavedFragment: BaseFragment() {
             }
         }
         viewModel.liveData.observe(viewLifecycleOwner) { list ->
-            when (list) {
-                is Either.Success -> {
-                    hideError()
-                    recipesAdapter.submitList(list.response)
-                }
-                is Either.Error -> {
-                    showError(list.error)
-                }
+            if (list.isEmpty()) {
+                showError("Nothing found :(")
+            } else {
+                hideError()
+                recipesAdapter.submitList(list)
             }
         }
     }
@@ -89,7 +83,6 @@ class SavedFragment: BaseFragment() {
     override fun onFilteredListener(types: List<String>, cuisines: List<String>) {
         viewModel.setTypes(types)
         viewModel.setCuisines(cuisines)
-        viewModel.getSavedRecipes()
     }
 
     override fun onDestroyView() {

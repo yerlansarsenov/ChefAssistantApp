@@ -1,5 +1,6 @@
 package kz.spoonacular.domain.usecase
 
+import kotlinx.coroutines.flow.Flow
 import kz.spoonacular.domain.model.reciepeDetails.RecipeDetailed
 import kz.spoonacular.domain.model.reciepeDetails.analyzedInstr.AnalyzedInstruction
 import kz.spoonacular.domain.model.reciepeDetails.analyzedInstr.Step
@@ -16,8 +17,13 @@ class SavedRecipesUseCase (
 ) {
     suspend fun getSavedRecipes(): List<Recipe> = repository.getRecipes()
 
+    fun getSavedRecipesFlow(): Flow<List<Recipe>> = repository.getRecipesFlow()
+
     suspend fun getSavedRecipes(types: List<String>, cuisines: List<String>): List<Recipe>
         = repository.getRecipes(types = types, cuisines = cuisines)
+
+    fun getSavedRecipesFlow(types: List<String>, cuisines: List<String>): Flow<List<Recipe>>
+            = repository.getRecipesFlow(types = types, cuisines = cuisines)
 
     suspend fun getSavedRecipeById(id: Int): RecipeDetailed? = repository.getRecipeById(id)
 

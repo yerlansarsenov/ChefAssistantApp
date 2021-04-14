@@ -1,10 +1,10 @@
 package kz.spoonacular.chefassistant.ui.searchRecipes
 
-import android.app.SearchManager
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.appcompat.widget.SearchView
@@ -14,23 +14,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kz.spoonacular.chefassistant.R
-import kz.spoonacular.chefassistant.extensions.intentFor
 import kz.spoonacular.chefassistant.extensions.showToast
 import kz.spoonacular.chefassistant.model.LoadingState
-import kz.spoonacular.chefassistant.ui.MainActivity
 import kz.spoonacular.chefassistant.ui.adapter.RecipesAdapter
 import kz.spoonacular.chefassistant.ui.adapter.RecipesSearchableAdapter
 import kz.spoonacular.chefassistant.ui.common.BaseFragment
-import kz.spoonacular.chefassistant.ui.detailActivity.DetailActivity
-import kz.spoonacular.chefassistant.ui.detailActivity.RECIPE_ID_KEY
 import kz.spoonacular.domain.model.Either
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * Created by Sarsenov Yerlan on 01.02.2021.
  */
-
-// todo https://habr.com/ru/company/badoo/blog/429728/
 
 private const val TAG = "SearchFragment"
 

@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 import kz.spoonacular.data.model.db_models_new.RecipesEntity
 import kz.spoonacular.data.model.db_models_new.detailed_entities.RecipeDetailsEntity
 
@@ -21,9 +22,15 @@ abstract class RecipesDao {
     @Query("select * from recipes_saved")
     abstract suspend fun getAllRecipes(): List<RecipesEntity>
 
+    @Query("select * from recipes_saved")
+    abstract fun getAllRecipesFlow(): Flow<List<RecipesEntity>>
+
     // todo try to use json_contains
     @Query("select * from recipe_details_entity")
     abstract suspend fun getAllRecipesDetailed(): List<RecipeDetailsEntity>
+
+    @Query("select * from recipe_details_entity")
+    abstract fun getAllRecipesDetailedFlow(): Flow<List<RecipeDetailsEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun insertRecipes(vararg recipes: RecipesEntity)

@@ -42,6 +42,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintRight_toLeftOf="@id/filter_image_view"
+                    app:layout_constraintLeft_toRightOf="@id/toolbar_search_textview"
                     app:layout_constraintHorizontal_bias="1"
                     app:searchIcon="@drawable/ic_baseline_search_24"
                     android:background="@color/colorPrimary"

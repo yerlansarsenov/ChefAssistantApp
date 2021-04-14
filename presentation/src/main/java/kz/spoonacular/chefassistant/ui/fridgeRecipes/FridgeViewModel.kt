@@ -3,11 +3,8 @@ package kz.spoonacular.chefassistant.ui.fridgeRecipes
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import kz.spoonacular.chefassistant.model.LoadingState
-import kz.spoonacular.chefassistant.ui.savedRecipes.SavedViewModel
 import kz.spoonacular.domain.model.Either
 import kz.spoonacular.domain.model.recipeByIngredients.RecipeByIngredients
-import kz.spoonacular.domain.model.recipeByIngredients.ingredient.IngredientsResponse
-import kz.spoonacular.domain.usecase.IngredientsSearchUseCase
 import kz.spoonacular.domain.usecase.RecipeFromIngredientsUseCase
 
 /**

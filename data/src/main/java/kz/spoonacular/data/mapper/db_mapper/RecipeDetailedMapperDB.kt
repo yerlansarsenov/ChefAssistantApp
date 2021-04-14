@@ -325,9 +325,6 @@ abstract class ExtendedIngrMapperDB(
 
     abstract class MeasuresMapperDB: DoubleMapper<MeasuresEntity, Measures> {
 
-        val metricMapperDB = MetricMapperDB()
-        val usMapperDB = UsMapperDB()
-
         override fun mapTo(model: MeasuresEntity): Measures {
             return Measures(
                 metric =

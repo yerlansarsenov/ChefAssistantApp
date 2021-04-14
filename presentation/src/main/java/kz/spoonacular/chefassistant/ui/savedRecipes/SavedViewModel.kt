@@ -1,15 +1,14 @@
 package kz.spoonacular.chefassistant.ui.savedRecipes
 
 import androidx.lifecycle.*
-import kotlinx.coroutines.launch
 import kz.spoonacular.chefassistant.model.LoadingState
-import kz.spoonacular.domain.model.Either
 import kz.spoonacular.domain.model.recipes.Recipe
 import kz.spoonacular.domain.usecase.SavedRecipesUseCase
 
 /**
  * Created by Sarsenov Yerlan on 13.02.2021.
  */
+
 class SavedViewModel(
     private val savedStateHandle: SavedStateHandle,
     private val useCase: SavedRecipesUseCase
@@ -23,55 +22,38 @@ class SavedViewModel(
 
     fun setTypes(types: List<String>) {
         savedStateHandle[TYPES_KEY] = types
-        setUpdated(false)
     }
 
     fun setCuisines(cuisines: List<String>) {
         savedStateHandle[CUISINES_KEY] = cuisines
-        setUpdated(false)
     }
 
-    private fun setUpdated(value: Boolean) {
-        savedStateHandle[UPDATE_KEY] = value
+    init {
+        setTypes(emptyList())
+        setCuisines(emptyList())
     }
 
     fun getTypes(): List<String> = savedStateHandle[TYPES_KEY] ?: emptyList()
 
+    val typesLiveData: LiveData<List<String>> =
+        savedStateHandle.getLiveData(TYPES_KEY)
+
     fun getCuisines(): List<String> = savedStateHandle[CUISINES_KEY] ?: emptyList()
 
-    private fun isUpdated(): Boolean = savedStateHandle[UPDATE_KEY] ?: false
+    val cuisinesLiveData: LiveData<List<String>> =
+        savedStateHandle.getLiveData(CUISINES_KEY)
 
-    private val _liveData = MutableLiveData<Either<List<Recipe>>>()
-    val liveData: LiveData<Either<List<Recipe>>>
+    private val _liveData =
+        typesLiveData.switchMap { types ->
+            cuisinesLiveData.switchMap { cuisines ->
+                useCase.getSavedRecipesFlow(types, cuisines).asLiveData()
+            }
+        }
+    val liveData: LiveData<List<Recipe>>
         get() = _liveData
 
     private val _liveDataLoadingState = MutableLiveData<LoadingState>()
     val liveDataLoadingState: LiveData<LoadingState>
         get() = _liveDataLoadingState
-
-    init {
-        getSavedRecipes()
-    }
-
-    fun getSavedRecipes() {
-        if (isUpdated()) {
-            viewModelScope.launch {
-                _liveDataLoadingState.value = LoadingState.HideLoading
-            }
-            return
-        }
-        viewModelScope.launch {
-            _liveDataLoadingState.value = LoadingState.ShowLoading
-            val request = useCase.getSavedRecipes(getTypes(), getCuisines())
-            if (request.isNullOrEmpty()) {
-                setUpdated(false)
-                _liveData.value = Either.Error("Nothing found :(")
-            } else {
-                setUpdated(true)
-                _liveData.value = Either.Success(request)
-            }
-            _liveDataLoadingState.value = LoadingState.HideLoading
-        }
-    }
 
 }

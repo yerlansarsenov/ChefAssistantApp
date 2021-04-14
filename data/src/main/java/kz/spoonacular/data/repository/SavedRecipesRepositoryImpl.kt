@@ -1,5 +1,8 @@
 package kz.spoonacular.data.repository
 
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
 import kz.spoonacular.data.database.RecipesDao
 import kz.spoonacular.data.mapper.db_mapper.*
 import kz.spoonacular.domain.model.reciepeDetails.RecipeDetailed
@@ -30,6 +33,14 @@ class SavedRecipesRepositoryImpl(
         }
     }
 
+    override fun getRecipesFlow(): Flow<List<Recipe>> {
+        return dao.getAllRecipesFlow().map { list ->
+            list.map { recipe ->
+                recipeMapperDB.mapTo(recipe)
+            }
+        }
+    }
+
     override suspend fun getRecipes(types: List<String>, cuisines: List<String>): List<Recipe> {
         if (types.isEmpty() && cuisines.isEmpty())
             return getRecipes()
@@ -42,41 +53,43 @@ class SavedRecipesRepositoryImpl(
         }
     }
 
+    override fun getRecipesFlow(types: List<String>, cuisines: List<String>): Flow<List<Recipe>> {
+        if (types.isEmpty() && cuisines.isEmpty())
+            return getRecipesFlow()
+        return dao.getAllRecipesDetailedFlow().map { list ->
+            list.map { recipe ->
+                recipeDetailedMapperDB.mapTo(recipe)
+            }.filter { recipe ->
+                types.intersect(recipe.dishTypes).isNotEmpty() || cuisines.intersect(recipe.cuisines).isNotEmpty()
+            }.map { recipe ->
+                recipeDetailedToRecipeMapperDB.map(recipe)
+            }
+        }
+    }
+
     /**
      * implementing mappers using DAO
      */
 
-    private val wineMapperDB = object : WineMapperDB() {
+    private val wineMapperDB = object : WineMapperDB() { }
 
-    }
-
-    private val stepsMapperDB = object : AnalyzedInstrMapperDB.StepsMapperDB() {
-
-    }
+    private val stepsMapperDB = object : AnalyzedInstrMapperDB.StepsMapperDB() { }
 
     private val analyzedInstrMapperDB = object : AnalyzedInstrMapperDB(
         stepsMapper = stepsMapperDB
-    ) {
+    ) { }
 
-    }
-
-    private val measuresMapperDB = object : ExtendedIngrMapperDB.MeasuresMapperDB() {
-
-    }
+    private val measuresMapperDB = object : ExtendedIngrMapperDB.MeasuresMapperDB() { }
 
     private val extendedIngrMapperDB = object : ExtendedIngrMapperDB(
         measuresMapper = measuresMapperDB
-    ) {
-
-    }
+    ) { }
 
     private val recipeDetailedMapperDB = object : RecipeDetailedMapperDB(
         wineMapper = wineMapperDB,
         analyzedMapper = analyzedInstrMapperDB,
         extendedIngrMapper = extendedIngrMapperDB
-    ) {
-
-    }
+    ) { }
 
     /**
      * implementing SavedRecipesRepository
