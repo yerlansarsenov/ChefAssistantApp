@@ -143,4 +143,9 @@ class SavedRecipesRepositoryImpl(
         }*/
     }
 
+    override suspend fun deleteRecipe(recipeDetailed: RecipeDetailed) {
+        dao.deleteRecipeDetails(recipeDetailed.id)
+        dao.deleteRecipe(recipeDetailed.id)
+    }
+
 }

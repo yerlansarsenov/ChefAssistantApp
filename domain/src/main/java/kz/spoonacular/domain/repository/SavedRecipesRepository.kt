@@ -20,4 +20,6 @@ interface SavedRecipesRepository {
     suspend fun getRecipeById(id: Int): RecipeDetailed?
 
     suspend fun insertRecipe(recipeDetailed: RecipeDetailed)
+
+    suspend fun deleteRecipe(recipeDetailed: RecipeDetailed)
 }

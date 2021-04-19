@@ -28,4 +28,6 @@ class SavedRecipesUseCase (
     suspend fun getSavedRecipeById(id: Int): RecipeDetailed? = repository.getRecipeById(id)
 
     suspend fun insertRecipe(recipeDetailed: RecipeDetailed) = repository.insertRecipe(recipeDetailed = recipeDetailed)
+
+    suspend fun deleteRecipe(recipeDetailed: RecipeDetailed) = repository.deleteRecipe(recipeDetailed = recipeDetailed)
 }

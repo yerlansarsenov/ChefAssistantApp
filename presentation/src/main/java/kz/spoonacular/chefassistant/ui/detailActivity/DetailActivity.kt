@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.core.widget.ContentLoadingProgressBar
 import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -96,10 +97,20 @@ class DetailActivity : AppCompatActivity() {
                 is Either.Success -> {
                     first.response.apply {
                         if (!state.second) {
-                            addToSavedButton.visibility = View.VISIBLE
-                            addToSavedButton.setOnClickListener {
+                            addToSavedButton.text = getString(R.string.add_to_my_recipes)
+                            addToSavedButton.setBackgroundColor(ContextCompat.getColor(this@DetailActivity, R.color.colorPrimary))
+                            addToSavedButton.setOnClickListener { view ->
                                 viewModel.insertRecipe(this)
-                                addToSavedButton.visibility = View.GONE
+                                addToSavedButton.text = getString(R.string.remove_from_my_recipes)
+                                addToSavedButton.setBackgroundColor(ContextCompat.getColor(view.context, R.color.gray))
+                            }
+                        } else {
+                            addToSavedButton.text = getString(R.string.remove_from_my_recipes)
+                            addToSavedButton.setBackgroundColor(ContextCompat.getColor(this@DetailActivity, R.color.gray))
+                            addToSavedButton.setOnClickListener { view ->
+                                viewModel.deleteRecipe(this)
+                                addToSavedButton.text = getString(R.string.add_to_my_recipes)
+                                addToSavedButton.setBackgroundColor(ContextCompat.getColor(view.context, R.color.colorPrimary))
                             }
                         }
                         toolbarTitle.title = this.title
