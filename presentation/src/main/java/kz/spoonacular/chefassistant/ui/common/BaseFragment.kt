@@ -7,7 +7,9 @@ import android.widget.TextView
 import androidx.core.widget.ContentLoadingProgressBar
 import androidx.fragment.app.Fragment
 import kz.spoonacular.chefassistant.R
+import kz.spoonacular.chefassistant.extensions.hideMe
 import kz.spoonacular.chefassistant.extensions.intentFor
+import kz.spoonacular.chefassistant.extensions.showMe
 import kz.spoonacular.chefassistant.extensions.showProcessLoading
 import kz.spoonacular.chefassistant.ui.detailActivity.DetailActivity
 import kz.spoonacular.chefassistant.ui.detailActivity.RECIPE_ID_KEY
@@ -38,22 +40,22 @@ abstract class BaseFragment: Fragment() {
     }
 
     protected fun showLoading() {
-        progressBar?.visibility = View.VISIBLE
+        progressBar?.showMe()
         hideError()
     }
 
     protected fun hideLoading() {
-        progressBar?.visibility = View.GONE
+        progressBar?.hideMe()
     }
 
     protected fun showError(error: String) {
-        errorLayout?.visibility = View.VISIBLE
+        errorLayout?.showMe()
         val textView = errorLayout?.findViewById<TextView>(R.id.error_textview)
         textView?.text = error
     }
 
     protected fun hideError() {
-        errorLayout?.visibility = View.GONE
+        errorLayout?.hideMe()
     }
 
     protected fun openRecipeDetail(id: Int) {

@@ -2,19 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/searchFragment"
+        android:id="@id/search"
         android:title="Search"
         android:icon="@drawable/ic_loupe"
         />
 
     <item
-        android:id="@+id/fridgeFragment"
+        android:id="@id/fridge"
         android:title="Fridge"
         android:icon="@drawable/ic_fridge"
         />
 
     <item
-        android:id="@+id/savedFragment"
+        android:id="@id/saved"
         android:title="Saved"
         android:icon="@drawable/ic_saved"
         />

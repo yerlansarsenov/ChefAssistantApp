@@ -19,9 +19,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import kz.spoonacular.chefassistant.R
-import kz.spoonacular.chefassistant.extensions.lazyArg
-import kz.spoonacular.chefassistant.extensions.setImageWithUrl
-import kz.spoonacular.chefassistant.extensions.showToast
+import kz.spoonacular.chefassistant.extensions.*
 import kz.spoonacular.chefassistant.model.LoadingState
 import kz.spoonacular.domain.model.Either
 import kz.spoonacular.domain.model.reciepeDetails.RecipeDetailed
@@ -95,6 +93,7 @@ class DetailActivity : AppCompatActivity() {
                 return@observe
             when (val first = state.first) {
                 is Either.Success -> {
+                    hideError()
                     first.response.apply {
                         if (!state.second) {
                             addToSavedButton.text = getString(R.string.add_to_my_recipes)
@@ -137,22 +136,22 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun showLoading() {
-        progressBar.visibility = View.VISIBLE
+        progressBar.showMe()
     }
 
     private fun hideLoading() {
-        progressBar.visibility = View.GONE
+        progressBar.hideMe()
         swipeRefreshLayout.isRefreshing = false
     }
 
     private fun showError(error: String) {
-        errorLayout.visibility = View.VISIBLE
+        errorLayout.showMe()
         val textView = errorLayout.findViewById<TextView>(R.id.error_textview)
         textView.text = error
     }
 
     private fun hideError() {
-        errorLayout.visibility = View.GONE
+        errorLayout.hideMe()
     }
 
     override fun onDestroy() {

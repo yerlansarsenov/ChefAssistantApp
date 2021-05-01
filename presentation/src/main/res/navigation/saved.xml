@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/saved"
+    app:startDestination="@id/savedFragment">
+
+    <fragment
+        android:id="@+id/savedFragment"
+        android:name="kz.spoonacular.chefassistant.ui.savedRecipes.SavedFragment"
+        android:label="SavedFragment"
+        tools:layout="@layout/fr_saved"
+        />
+</navigation>

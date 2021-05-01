@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.appcompat.widget.SearchView
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -82,6 +83,7 @@ class SearchFragment: BaseFragment() {
                 onFilteredListener(types, cuisines)
             }
             dialog.show(parentFragmentManager, FILTER_DIALOG)
+            //findNavController().navigate(R.id.action_searchFragment2_to_filterDialogFragment)
         }
 
         suggestionsLinearLayout = view.findViewById(R.id.search_suggestions_linear_layout)

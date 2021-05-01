@@ -42,3 +42,11 @@ fun AppCompatImageView.setImageWithUrlAndFit(url: String) {
         .resize(50, 50)
         .into(this)
 }
+
+fun View.showMe() {
+    this.visibility = View.VISIBLE
+}
+
+fun View.hideMe() {
+    this.visibility = View.GONE
+}
