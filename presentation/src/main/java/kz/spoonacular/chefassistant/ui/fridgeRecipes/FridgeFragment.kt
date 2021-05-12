@@ -37,7 +37,7 @@ class FridgeFragment: BaseFragment() {
 
     private lateinit var recyclerView: RecyclerView
 
-    private lateinit var chipGroup: ChipGroup
+    private var chipGroup: ChipGroup? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,7 +52,7 @@ class FridgeFragment: BaseFragment() {
         recyclerView = view.findViewById(R.id.recipes_recycler_view_fridge)
         chipGroup = view.findViewById(R.id.chip_group_fridge)
         viewModel.ingredientsLiveData.observe(viewLifecycleOwner) { list ->
-            chipGroup.removeAllViews()
+            chipGroup?.removeAllViews()
             list.forEach { item ->
                 val chip = Chip(context)
                 chip.apply {
@@ -63,10 +63,10 @@ class FridgeFragment: BaseFragment() {
                     setOnCloseIconClickListener {
                         viewModel.removeIngredient(item)
                         viewModel.searchRecipes()
-                        chipGroup.removeView(chip)
+                        chipGroup?.removeView(chip)
                     }
                 }
-                chipGroup.addView(chip)
+                chipGroup?.addView(chip)
             }
         }
         recyclerView.adapter = recipesAdapter
@@ -130,6 +130,8 @@ class FridgeFragment: BaseFragment() {
             adapter = null
             layoutManager = null
         }
+        chipGroup?.removeAllViews()
+        //chipGroup = null
         super.onDestroyView()
     }
 
