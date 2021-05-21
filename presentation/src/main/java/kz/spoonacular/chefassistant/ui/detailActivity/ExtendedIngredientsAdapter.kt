@@ -11,16 +11,21 @@ import androidx.recyclerview.widget.RecyclerView
 import kz.spoonacular.chefassistant.R
 import kz.spoonacular.domain.model.reciepeDetails.extendedIngr.ExtendedIngredient
 
-class ExtendedIngredientsAdapter: RecyclerView.Adapter<ExtendedIngredientsAdapter.ExtendedIngredientsViewHolder>() {
+class ExtendedIngredientsAdapter:
+    RecyclerView.Adapter<ExtendedIngredientsAdapter.ExtendedIngredientsViewHolder>() {
 
     private val list: MutableList<ExtendedIngredient> = mutableListOf()
 
     fun submitList(list: List<ExtendedIngredient>) {
         this.list.clear()
         this.list.addAll(list)
+        notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExtendedIngredientsViewHolder =
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): ExtendedIngredientsViewHolder =
         ExtendedIngredientsViewHolder(
             LayoutInflater
                 .from(parent.context)
@@ -44,10 +49,14 @@ class ExtendedIngredientsAdapter: RecyclerView.Adapter<ExtendedIngredientsAdapte
     }
 
     inner class ExtendedIngredientsViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        private val ingredientNameTextView: AppCompatTextView = itemView.findViewById(R.id.ingredient_name)
-        private val ingredientAmountTextView: AppCompatTextView = itemView.findViewById(R.id.ingredient_amount)
-        private val ingredientUnitTextView: AppCompatTextView = itemView.findViewById(R.id.ingredient_unit)
-        private val ingredientConsistencyTextView: AppCompatTextView = itemView.findViewById(R.id.ingredient_consistency)
+        private val ingredientNameTextView: AppCompatTextView
+            = itemView.findViewById(R.id.ingredient_name)
+        private val ingredientAmountTextView: AppCompatTextView
+            = itemView.findViewById(R.id.ingredient_amount)
+        private val ingredientUnitTextView: AppCompatTextView
+            = itemView.findViewById(R.id.ingredient_unit)
+        private val ingredientConsistencyTextView: AppCompatTextView
+            = itemView.findViewById(R.id.ingredient_consistency)
 
         fun bind(ingredient: ExtendedIngredient) {
             ingredient.let { item ->

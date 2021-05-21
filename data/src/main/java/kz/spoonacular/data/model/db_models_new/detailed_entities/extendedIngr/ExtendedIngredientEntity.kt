@@ -36,4 +36,3 @@ class MeasuresTypeConverter {
     @TypeConverter
     fun jsonToList(value: String) = Gson().fromJson(value, MeasuresEntity::class.java)
 }
-

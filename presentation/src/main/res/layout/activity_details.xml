@@ -18,6 +18,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar_details"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:contentScrim="@color/colorPrimary"
@@ -66,7 +67,7 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     >
 
                     <LinearLayout
@@ -154,9 +155,10 @@
                         android:id="@+id/details_ingredients_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginStart="20dp"
                         android:text="@string/ingredients"
-                        android:textColor="@color/white"
+                        android:textColor="@color/black"
                         android:textSize="24sp"
                         app:layout_constraintTop_toBottomOf="@id/details_time" />
 
@@ -171,7 +173,34 @@
                         android:nestedScrollingEnabled="false"
                         />
 
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/details_instructions_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/details_ingredients_recycler"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginStart="20dp"
+                        android:text="@string/instructions"
+                        android:textColor="@color/black"
+                        android:textSize="24sp"
+                        />
 
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/details_instructions_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/details_instructions_title"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:textColor="@color/dark_gray"
+                        android:textSize="20sp"
+                        tools:text="kfjdaslf hagjrgfh ughnhggnn hbjkbxxch blbhenvbbih"
+                        />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

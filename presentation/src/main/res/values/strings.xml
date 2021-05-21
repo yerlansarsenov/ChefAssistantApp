@@ -5,10 +5,13 @@
     <string name="saved_recipes">Saved recipes</string>
     <string name="searching_recipes">Searching recipes</string>
     <string name="recipe">Recipe</string>
-    <string name="ingredients">Ingredients</string>
+    <string name="ingredients">Ingredients:</string>
     <string name="add_to_my_recipes">add to my recipes</string>
     <string name="remove_from_my_recipes">remove from my recipes</string>
 
     <string name="appbar_scrolling_view_behavior" translatable="false">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
     <string name="recipe_hint">for ex: pizza</string>
+    <string name="instructions">Instructions:</string>
+    <string name="equipments">Equipments:</string>
+    <string name="ingredients">Ingredients:</string>
 </resources>

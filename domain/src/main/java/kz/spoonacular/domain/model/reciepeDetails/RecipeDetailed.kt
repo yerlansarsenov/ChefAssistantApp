@@ -39,4 +39,11 @@ data class RecipeDetailed(
     val veryPopular: Boolean,
     val weightWatcherSmartPoints: Int,
     val winePairing: WinePairing
-)
+) {
+    fun getMinutes(): String
+        = maxOf(
+            cookingMinutes, maxOf(preparationMinutes, readyInMinutes)
+        )
+        .toString()
+        .plus(" min")
+}

@@ -9,8 +9,13 @@
     <color name="white">#FFFFFFFF</color>
     <color name="red">#FFFF0000</color>
     <color name="gray">#5F5F5F</color>
+    <color name="dark_gray">#1F1F1F</color>
+
 
     <color name="colorPrimary">#D53A47</color>
     <color name="colorPrimaryDark">#D53A47</color>
     <color name="colorAccent">#D53A47</color>
+    <color name="colorEquipment">#B9FF0015</color>
+    <color name="colorIngredient">#FF5100</color>
+
 </resources>
