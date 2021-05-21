@@ -28,7 +28,7 @@ class SavedFragment: BaseFragment() {
         RecipesAdapter(::openRecipeDetail)
     }
 
-    private lateinit var recyclerView: RecyclerView
+    private var recyclerView: RecyclerView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,8 +42,8 @@ class SavedFragment: BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         errorLayout = view.findViewById(R.id.error_layout)
         recyclerView = view.findViewById(R.id.recipes_saved_recycler_view)
-        recyclerView.adapter = recipesAdapter
-        recyclerView.layoutManager = GridLayoutManager(activity, 2)
+        recyclerView?.adapter = recipesAdapter
+        recyclerView?.layoutManager = GridLayoutManager(activity, 2)
         val swipeRefreshLayout = view.findViewById<SwipeRefreshLayout>(R.id.swipe_refresh_layout)
         swipeRefreshLayout.setOnRefreshListener {
             swipeRefreshLayout.isRefreshing = false // FIXME: 14.04.2021 correct swiperefreshing
@@ -86,10 +86,11 @@ class SavedFragment: BaseFragment() {
     }
 
     override fun onDestroyView() {
-        recyclerView.apply {
+        recyclerView?.apply {
             adapter = null
             layoutManager = null
         }
+        recyclerView = null
         super.onDestroyView()
     }
 

@@ -35,7 +35,7 @@ class FridgeFragment: BaseFragment() {
         RecipesByIngrAdapter(::openRecipeDetail)
     }
 
-    private lateinit var recyclerView: RecyclerView
+    private var recyclerView: RecyclerView? = null
 
     private var chipGroup: ChipGroup? = null
 
@@ -69,8 +69,8 @@ class FridgeFragment: BaseFragment() {
                 chipGroup?.addView(chip)
             }
         }
-        recyclerView.adapter = recipesAdapter
-        recyclerView.layoutManager = LinearLayoutManager(activity)
+        recyclerView?.adapter = recipesAdapter
+        recyclerView?.layoutManager = LinearLayoutManager(activity)
         val swipeRefreshLayout = view.findViewById<SwipeRefreshLayout>(R.id.swipe_refresh_layout_fridge)
         swipeRefreshLayout.setOnRefreshListener {
             viewModel.searchRecipes()
@@ -126,12 +126,13 @@ class FridgeFragment: BaseFragment() {
     }
 
     override fun onDestroyView() {
-        recyclerView.apply {
+        recyclerView?.apply {
             adapter = null
             layoutManager = null
         }
+        recyclerView = null
         chipGroup?.removeAllViews()
-        //chipGroup = null
+        chipGroup = null
         super.onDestroyView()
     }
 
