@@ -29,8 +29,10 @@ class IngredientsAdapter(
     }
 
     inner class IngredientViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        private val ingredientTextView: AppCompatTextView = itemView.findViewById(R.id.search_ingredient_textview)
-        private val ingredientImageView: AppCompatImageView = itemView.findViewById(R.id.search_ingredient_imageview)
+        private val ingredientTextView: AppCompatTextView =
+            itemView.findViewById(R.id.search_ingredient_textview)
+        private val ingredientImageView: AppCompatImageView =
+            itemView.findViewById(R.id.search_ingredient_imageview)
 
         fun bind(item: IngredientItem) {
             item.apply {

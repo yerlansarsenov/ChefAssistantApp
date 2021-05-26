@@ -53,7 +53,9 @@ class IngredientsDialogFragment : DialogFragment() {
         recyclerView = view.findViewById(R.id.ingredients_recycler_view)
         recyclerView!!.layoutManager = LinearLayoutManager(activity)
         recyclerView!!.adapter = adapter
-        recyclerView!!.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
+        recyclerView!!.addItemDecoration(
+            DividerItemDecoration(activity, DividerItemDecoration.VERTICAL)
+        )
         searchView = view.findViewById(R.id.ingredients_search_view)
         searchView!!.addTextChangedListener { query ->
             if (query != null && query.isNotEmpty()) {

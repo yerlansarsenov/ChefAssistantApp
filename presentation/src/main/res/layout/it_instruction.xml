@@ -21,10 +21,11 @@
         android:id="@+id/instruction_recycler"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toRightOf="@id/instruction_name"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/instruction_name"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         tools:listitem="@layout/it_step"
         />
 

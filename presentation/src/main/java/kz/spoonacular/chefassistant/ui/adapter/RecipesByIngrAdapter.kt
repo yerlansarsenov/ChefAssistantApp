@@ -19,7 +19,9 @@ import kz.spoonacular.domain.model.recipes.Recipe
  */
 class RecipesByIngrAdapter(
     val listener: (id: Int) -> Unit
-): ListAdapter<RecipeByIngredients, RecipesByIngrAdapter.RecipesViewHolder>(RecipesByIngrDiffUtil()) {
+): ListAdapter<RecipeByIngredients, RecipesByIngrAdapter.RecipesViewHolder>(
+    RecipesByIngrDiffUtil()
+) {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipesViewHolder {

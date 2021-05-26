@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -18,7 +17,7 @@ import kz.spoonacular.domain.model.recipes.Recipe
  */
 class RecipesAdapter(
     val listener: (id: Int) -> Unit
-): ListAdapter<Recipe, RecipesAdapter.RecipesViewHolder>(RecipeDiffUtil()) {
+): ListAdapter<Recipe, RecipesAdapter.RecipesViewHolder>(RecipeItemCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipesViewHolder {
         return RecipesViewHolder(
@@ -47,9 +46,9 @@ class RecipesAdapter(
     }
 }
 
-class RecipeDiffUtil: DiffUtil.ItemCallback<Recipe>() {
+class RecipeItemCallback: DiffUtil.ItemCallback<Recipe>() {
     override fun areItemsTheSame(oldItem: Recipe, newItem: Recipe): Boolean {
-        return oldItem.id == newItem.id
+        return oldItem.id === newItem.id
     }
 
     override fun areContentsTheSame(oldItem: Recipe, newItem: Recipe): Boolean {

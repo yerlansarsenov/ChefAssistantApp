@@ -1,7 +1,6 @@
 package kz.spoonacular.chefassistant.ui.detailActivity
 
 import android.os.Bundle
-import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -16,15 +15,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.appbar.AppBarLayout
-import com.google.android.material.appbar.CollapsingToolbarLayout
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import kz.spoonacular.chefassistant.R
 import kz.spoonacular.chefassistant.extensions.*
 import kz.spoonacular.chefassistant.model.LoadingState
+import kz.spoonacular.chefassistant.ui.detailActivity.adapters.AnalyzedInstructionsAdapter
+import kz.spoonacular.chefassistant.ui.detailActivity.adapters.ExtendedIngredientsAdapter
 import kz.spoonacular.domain.model.Either
-import kz.spoonacular.domain.model.reciepeDetails.RecipeDetailed
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
@@ -36,6 +33,8 @@ const val RECIPE_ID_KEY = "RECIPE_ID_KEY"
 class DetailActivity : AppCompatActivity() {
 
     private val ingredientsAdapter = ExtendedIngredientsAdapter()
+
+    private val analyzedInstructionsAdapter = AnalyzedInstructionsAdapter(this)
 
     private val viewModel: DetailViewModel by viewModel()
 
@@ -80,6 +79,9 @@ class DetailActivity : AppCompatActivity() {
     private val instructionsTextView: AppCompatTextView by lazy {
         findViewById(R.id.details_instructions_text)
     }
+    private val analyzedRecyclerView: RecyclerView by lazy {
+        findViewById(R.id.details_analyzed_recycler)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,6 +92,8 @@ class DetailActivity : AppCompatActivity() {
         recyclerView.addItemDecoration(
             DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
         )
+        analyzedRecyclerView.adapter = analyzedInstructionsAdapter
+        analyzedRecyclerView.layoutManager = LinearLayoutManager(this)
         swipeRefreshLayout.setOnRefreshListener {
             viewModel.searchRecipeById(recipeId)
         }
@@ -159,10 +163,11 @@ class DetailActivity : AppCompatActivity() {
                                 )
                             }
                         }
-                        toolbarTitle.title = this.title
+                        toolbarTitle.title = title
                         if (this.image.isNotEmpty())
-                            posterImageView.setImageWithUrl(this.image)
-                        ingredientsAdapter.submitList(this.extendedIngredients)
+                            posterImageView.setImageWithUrl(image)
+                        ingredientsAdapter.submitList(extendedIngredients)
+                        analyzedInstructionsAdapter.submitList(analyzedInstructions)
                         detailsTimeText.text = getMinutes()
                         detailsHealthText.text = healthScore.toString()
                         detailsScoreText.text = spoonacularScore.toString()
@@ -205,6 +210,10 @@ class DetailActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         recyclerView.apply {
+            adapter = null
+            layoutManager = null
+        }
+        analyzedRecyclerView.apply {
             adapter = null
             layoutManager = null
         }

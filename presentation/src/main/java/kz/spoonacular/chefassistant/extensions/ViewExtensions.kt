@@ -31,15 +31,21 @@ fun RatingBar.setImdbRating(rate: String) {
 }
 
 fun AppCompatImageView.setImageWithUrl(url: String) {
+    if (url.isEmpty()) {
+        return
+    }
     Picasso.get()
         .load(url)
         .into(this)
 }
 
-fun AppCompatImageView.setImageWithUrlAndFit(url: String) {
+fun AppCompatImageView.setImageWithUrlAndFit(url: String, width: Int = 50, height: Int = 50) {
+    if (url.isEmpty()) {
+        return
+    }
     Picasso.get()
         .load(url)
-        .resize(50, 50)
+        .resize(width, height)
         .into(this)
 }
 

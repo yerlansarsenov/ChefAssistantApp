@@ -5,4 +5,4 @@ data class Equipment(
     val image: String,
     val localizedName: String,
     val name: String
-)
+) : Inquipment

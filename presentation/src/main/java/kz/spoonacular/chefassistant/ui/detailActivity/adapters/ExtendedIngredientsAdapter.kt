@@ -1,4 +1,4 @@
-package kz.spoonacular.chefassistant.ui.detailActivity
+package kz.spoonacular.chefassistant.ui.detailActivity.adapters
 
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kz.spoonacular.chefassistant.R
 import kz.spoonacular.domain.model.reciepeDetails.extendedIngr.ExtendedIngredient

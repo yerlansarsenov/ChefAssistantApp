@@ -202,6 +202,17 @@
                         tools:text="kfjdaslf hagjrgfh ughnhggnn hbjkbxxch blbhenvbbih"
                         />
 
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/details_analyzed_recycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/details_instructions_text"
+                        tools:listitem="@layout/it_instruction"
+                        android:nestedScrollingEnabled="false"
+                        />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.core.widget.NestedScrollView>
