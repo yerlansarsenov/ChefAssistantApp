@@ -19,7 +19,8 @@ interface RecipeApi {
     suspend fun getRecipesBySearch(
         @Query("query") query: String,
         @Query("cuisine") cuisine: String,
-        @Query("type") type: String) : Response<RecipesResponseData>
+        @Query("type") type: String
+    ) : Response<RecipesResponseData>
 
     /**
      * --- TYPES:
@@ -76,11 +77,15 @@ interface RecipeApi {
 
     // https://api.spoonacular.com/recipes/findByIngredients?apiKey=&ingredients=apples,flour,sugar
     @GET("recipes/findByIngredients")
-    suspend fun getRecipesByIngredients(@Query("ingredients") args: String,
-                                        @Query("cuisine") cuisine: String,
-                                        @Query("type") type: String) : Response<List<RecipeByIngredientsData>>
+    suspend fun getRecipesByIngredients(
+        @Query("ingredients") args: String,
+        @Query("cuisine") cuisine: String,
+        @Query("type") type: String
+    ) : Response<List<RecipeByIngredientsData>>
 
     // https://api.spoonacular.com/recipes/autocomplete?query=chick&apiKey=
     @GET("recipes/autocomplete")
-    suspend fun getRecipesAutocomplete(@Query("autocomplete") query: String) : Response<List<RecipeAutocomplete>>
+    suspend fun getRecipesAutocomplete(
+        @Query("autocomplete") query: String
+    ) : Response<List<RecipeAutocomplete>>
 }

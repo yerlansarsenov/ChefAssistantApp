@@ -37,8 +37,8 @@ class IngredientsAdapter(
         fun bind(item: IngredientItem) {
             item.apply {
                 ingredientTextView.text = name
-                val baseImagesUrl = "https://spoonacular.com/ingredientImages"
-                ingredientImageView.setImageWithUrlAndFit("$baseImagesUrl/$image")
+                val baseImagesUrl = "https://spoonacular.com/cdn/ingredients_100x100/"
+                ingredientImageView.setImageWithUrlAndFit(baseImagesUrl.plus(image))
                 itemView.setOnClickListener {
                     listener.invoke(name)
                 }

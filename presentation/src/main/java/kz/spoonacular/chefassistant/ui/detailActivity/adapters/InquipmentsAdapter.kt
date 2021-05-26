@@ -15,6 +15,9 @@ import kz.spoonacular.domain.model.reciepeDetails.analyzedInstr.Equipment
 import kz.spoonacular.domain.model.reciepeDetails.analyzedInstr.Ingredient
 import kz.spoonacular.domain.model.reciepeDetails.analyzedInstr.Inquipment
 
+const val INGREDIENTS_IMAGE_BASEURL = "https://spoonacular.com/cdn/ingredients_100x100/"
+const val EQUIPMENTS_IMAGE_BASEURL = "https://spoonacular.com/cdn/equipment_100x100/"
+
 class InquipmentsAdapter : ListAdapter<Inquipment, InquipmentsAdapter.InquipmentHolder>(
     InquipmentCallback()
 ) {
@@ -51,11 +54,19 @@ class InquipmentsAdapter : ListAdapter<Inquipment, InquipmentsAdapter.Inquipment
             when (item) {
                 is Ingredient -> {
                     nameTextView.text = item.name
-                    imageView.setImageWithUrlAndFit(item.image, 80, 80)
+                    var url = item.image
+                    if (url.isNotEmpty()) {
+                        url = INGREDIENTS_IMAGE_BASEURL.plus(url)
+                    }
+                    imageView.setImageWithUrlAndFit(url, 80, 80)
                 }
                 is Equipment -> {
                     nameTextView.text = item.name
-                    imageView.setImageWithUrlAndFit(item.image, 80, 80)
+                    var url = item.image
+                    if (url.isNotEmpty()) {
+                        url = EQUIPMENTS_IMAGE_BASEURL.plus(url)
+                    }
+                    imageView.setImageWithUrlAndFit(url, 80, 80)
                 }
             }
         }

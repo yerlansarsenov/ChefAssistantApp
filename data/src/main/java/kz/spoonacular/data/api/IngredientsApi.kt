@@ -8,5 +8,7 @@ import retrofit2.http.Query
 
 interface IngredientsApi {
     @GET("food/ingredients/search")
-    suspend fun getIngredientsBySearchAsync(@Query("query") name: String) : Response<IngredientsResponseData>
+    suspend fun getIngredientsBySearchAsync(
+        @Query("query") name: String
+    ) : Response<IngredientsResponseData>
 }
